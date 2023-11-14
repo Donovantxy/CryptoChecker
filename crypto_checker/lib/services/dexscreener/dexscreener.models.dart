@@ -15,6 +15,41 @@ class TokenPair {
   Liquidity? liquidity;
   int? fdv;
   int? pairCreatedAt;
+
+  TokenPair({
+    this.chainId,
+    this.dexId,
+    this.url,
+    this.pairAddress,
+    this.baseToken,
+    this.quoteToken,
+    this.priceNative,
+    this.priceUsd,
+    this.txns,
+    this.volume,
+    this.priceChange,
+    this.liquidity,
+    this.fdv,
+    this.pairCreatedAt,
+  });
+
+  factory TokenPair.fromJson(Map json) {
+    return TokenPair(
+        chainId: json['chainId'],
+        dexId: json['dexId'],
+        url: json['url'],
+        pairAddress: json['pairAddress'],
+        baseToken: json['baseToken'],
+        quoteToken: json['quoteToken'],
+        priceNative: json['priceNative'],
+        priceUsd: json['priceUsd'],
+        txns: json['txns'],
+        volume: json['volume'],
+        priceChange: json['priceChange'],
+        liquidity: json['liquidity'],
+        fdv: json['fdv'],
+        pairCreatedAt: json['pairCreatedAt']);
+  }
 }
 
 class BaseToken {
