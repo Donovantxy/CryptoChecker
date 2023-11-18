@@ -6,7 +6,6 @@ void main() {
 }
 
 class MainApp extends StatefulWidget {
-  
   const MainApp({super.key});
 
   @override
@@ -14,16 +13,13 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-
   late DexScreenerService dexService;
 
   @override
   void initState() {
     super.initState();
     dexService = new DexScreenerService();
-    dexService.getTokenPair('PLS').then((value) => {
-      print(value)
-    });
+    dexService.getTokenPair('WPLS').then((value) => {print(value)});
   }
 
   @override

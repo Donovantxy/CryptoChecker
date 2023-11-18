@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:crypto_checker/services/dexscreener/dexscreener.models.dart';
+import 'package:crypto_checker/models/token_pair/token_pair.dart';
 import 'package:http/http.dart' as http;
 
 class DexScreenerService {
@@ -9,13 +9,13 @@ class DexScreenerService {
 
   DexScreenerService();
 
-  Future<List<TokenPair>> getTokenPair(String tokenSymbol) async {
-    final response = await http.get(Uri.parse('https://api.dexscreener.com/latest/dex/search/?q=$tokenSymbol/$quoteToken'));
-    if ( response.statusCode == 200 ) {
+  Future<List<TokenPair>> getTokenPair(String tokenSymbol, [String? tokenAdditionalSymbol]) async {
+    final response = await http.get(Uri.parse(
+        'https://api.dexscreener.com/latest/dex/search/?q=$tokenSymbol/$quoteToken'));
+    if (response.statusCode == 200) {
       var pairs = jsonDecode(response.body)['pairs'] as List;
-      return pairs.map((pair) => TokenPair.fromJson(pair)).toList();
+      return pairs.map((pair) => TokenPair.fromJson(pair)).where((pair) => pair.baseToken?.symbol == tokenSymbol || pair.baseToken?.symbol == tokenAdditionalSymbol ).toList();
     }
-    throw Exception('Failer to fetch data');
-
+    throw Exception('Failed to fetch data');
   }
 }
