@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'base_token.dart';
 import 'liquidity.dart';
 import 'price_change.dart';
@@ -6,12 +7,14 @@ import 'txns.dart';
 import 'volume.dart';
 
 class TokenPair {
+  String? chainId;
+  String? dexId;
   String? url;
   String? pairAddress;
   BaseToken? baseToken;
   QuoteToken? quoteToken;
   String? priceNative;
-  String? priceUsd;
+  double? priceUsd;
   Txns? txns;
   Volume? volume;
   PriceChange? priceChange;
@@ -19,6 +22,8 @@ class TokenPair {
   num? fdv;
 
   TokenPair({
+    this.chainId,
+    this.dexId,
     this.url,
     this.pairAddress,
     this.baseToken,
@@ -33,6 +38,8 @@ class TokenPair {
   });
 
   factory TokenPair.fromJson(Map<String, dynamic> json) => TokenPair(
+        chainId: json['chainId'] as String?,
+        dexId: json['dexId'] as String?,
         url: json['url'] as String?,
         pairAddress: json['pairAddress'] as String?,
         baseToken: json['baseToken'] == null
@@ -42,7 +49,7 @@ class TokenPair {
             ? null
             : QuoteToken.fromJson(json['quoteToken'] as Map<String, dynamic>),
         priceNative: json['priceNative'] as String?,
-        priceUsd: json['priceUsd'] as String?,
+        priceUsd: json['priceUsd'] != null ? double.tryParse(json['priceUsd']) ?? 0.0 : 0.0,
         txns: json['txns'] == null
             ? null
             : Txns.fromJson(json['txns'] as Map<String, dynamic>),
@@ -59,6 +66,8 @@ class TokenPair {
       );
 
   Map<String, dynamic> toJson() => {
+        'chainId': url,
+        'dexId': url,
         'url': url,
         'pairAddress': pairAddress,
         'baseToken': baseToken?.toJson(),
@@ -73,6 +82,6 @@ class TokenPair {
       };
 
   @override
-  String toString() => 'Symbol: ${baseToken?.symbol} Name: ${baseToken?.name} Quote token: ${quoteToken?.symbol} Price: $priceUsd\n';
-  
+  String toString() =>
+      'Symbol: ${baseToken?.symbol}, ChainId: $chainId, Name: ${baseToken?.name}, Price: ${quoteToken?.symbol} $priceUsd\n';
 }
