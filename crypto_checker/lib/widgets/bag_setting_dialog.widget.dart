@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class BagSettingDialog extends StatefulWidget {
   final Function(int) onBagSettingSubmit;
   final String tokenSymbol;
+  
   const BagSettingDialog({
     super.key,
     required this.tokenSymbol,

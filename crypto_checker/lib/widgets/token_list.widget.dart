@@ -1,5 +1,4 @@
 import 'package:crypto_checker/models/asset_token.dart';
-import 'package:crypto_checker/widgets/bag_setting_dialog.widget.dart';
 import 'package:crypto_checker/widgets/token_list_item.widget.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +7,7 @@ class TokenListWidget extends StatelessWidget {
 
   TokenListWidget({super.key, this.padding = const EdgeInsets.all(20)});
 
-  final assetTokenList = AssetTokenList.get();
+  final tokenAssetList = TokenAssetList.get();
 
   @override
   Widget build(BuildContext context) {
@@ -20,34 +19,20 @@ class TokenListWidget extends StatelessWidget {
           children: [
             Expanded(
                 child: ListView.builder(
-                    itemCount: assetTokenList.length,
+                    itemCount: tokenAssetList.length,
                     itemBuilder: (ctx, index) {
                       return Card(
                           clipBehavior: Clip.hardEdge,
                           child: InkWell(
-                              splashColor: Colors.blueGrey[200],
-                              onTap: () {
-                                showDialog<void>(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return _showBagSettingDialog(context, assetTokenList[index].symbol);
-                                    });
-                              },
-                              child: TokenPairItem(
-                                key: ValueKey(assetTokenList[index].pairAddress),
-                                assetToken: assetTokenList[index],
-                              )));
+                            splashColor: Colors.blueGrey[200],
+                            child: TokenPairItem(
+                              key: ValueKey(tokenAssetList[index].pairAddress),
+                              tokenAsset: tokenAssetList[index],
+                            ),
+                          ));
                     }))
           ],
         )));
   }
 
-  BagSettingDialog _showBagSettingDialog(BuildContext context, String symbol) {
-    return BagSettingDialog(
-      tokenSymbol: symbol,
-      onBagSettingSubmit: (double amount) {
-        print(amount);
-      },
-    );
-  }
 }

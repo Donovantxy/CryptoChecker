@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/models/token_pair/token_pair.dart';
 import 'package:crypto_checker/services/dexscreener/dexscreener.service.dart';
+import 'package:crypto_checker/widgets/bag_setting_dialog.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenPairItem extends StatefulWidget {
-  final AssetToken assetToken;
+  final TokenAsset tokenAsset;
 
-  const TokenPairItem({super.key, required this.assetToken});
+  const TokenPairItem({super.key, required this.tokenAsset});
 
   @override
   State<TokenPairItem> createState() => _TokenPairItemState();
@@ -17,6 +21,7 @@ class TokenPairItem extends StatefulWidget {
 class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveClientMixin<TokenPairItem> {
   late TokenPair tokenPair;
   bool isLoading = true;
+  Timer? _timer;
 
   @override
   bool get wantKeepAlive => true;
@@ -30,7 +35,7 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
         titleAlignment: ListTileTitleAlignment.center,
         leading: isLoading ? const CircularProgressIndicator(color: Colors.black38) : _getLeadingIcon(),
         title: Text(
-          isLoading ? '' : widget.assetToken.symbol,
+          isLoading ? '' : widget.tokenAsset.symbol,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: isLoading
@@ -38,38 +43,91 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
             : Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: Text(
-                    isLoading ? '' : 'price: \$${tokenPair.priceUsd}\nbag: ${widget.assetToken.bagSize}\ntotal: ${_getCapital()}',
+                    isLoading
+                        ? ''
+                        : 'price: \$${tokenPair.priceUsd}\nbag: ${widget.tokenAsset.bagSize}\ntotal: ${_getAsset()}',
                     style: const TextStyle(height: 1.4)),
-              ));
+              ),
+        onTap: () {
+          showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return _showBagSettingDialog(context, widget.tokenAsset.symbol);
+              });
+        });
   }
 
   @override
   void initState() {
     super.initState();
     _loadTokenData();
+    _periodicPriceRefresh();
   }
 
-  void _loadTokenData() async {
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _periodicPriceRefresh() {
+    _timer = Timer.periodic(Duration(seconds: 5), (_) {
+      print('isRefreshing');
+      _loadTokenData(isRefreshing: true);
+    });
+  }
+
+  void _loadTokenData({bool isRefreshing = false}) async {
     const dexScreenerService = DexScreenerService();
-    TokenPair tokenPair = await dexScreenerService.getTokenPair(widget.assetToken);
+    TokenPair tokenPair = await dexScreenerService.getTokenPair(widget.tokenAsset);
+    int bagSize = isRefreshing ? widget.tokenAsset.bagSize : await _getBagSizeFromPrefs();
     setState(() {
       this.tokenPair = tokenPair;
+      if ( widget.tokenAsset.symbol == 'WPLS' || widget.tokenAsset.symbol == 'ADA' || widget.tokenAsset.symbol == 'SAND') {
+        print('${widget.tokenAsset.symbol} - ${tokenPair.priceUsd}');
+      }
+      if (bagSize != -1) {
+        widget.tokenAsset.bagSize = bagSize;
+      }
       isLoading = false;
     });
   }
 
   Widget _getLeadingIcon() {
     Widget img;
-    if (widget.assetToken.icon.endsWith('.svg')) {
-      img = SvgPicture.asset(widget.assetToken.icon);
+    if (widget.tokenAsset.icon.endsWith('.svg')) {
+      img = SvgPicture.asset(widget.tokenAsset.icon);
     } else {
-      img = Image.asset(widget.assetToken.icon);
+      img = Image.asset(widget.tokenAsset.icon);
     }
-    return Container(width: 64.0, height: 64.0, child: img);
+    // return Container(width: 64.0, height: 64.0, child: img);
+    return SizedBox(width: 64.0, height: 64.0, child: img);
   }
 
-  String _getCapital() {
-    double capital = (widget.assetToken.bagSize * (tokenPair.priceUsd ?? 0.00));
+  String _getAsset() {
+    double capital = (widget.tokenAsset.bagSize * (tokenPair.priceUsd ?? 0.00));
     return NumberFormat.simpleCurrency(locale: 'en_US', decimalDigits: 2).format(capital);
+  }
+
+  BagSettingDialog _showBagSettingDialog(BuildContext context, String symbol) {
+    return BagSettingDialog(
+      tokenSymbol: symbol,
+      onBagSettingSubmit: (int amount) async {
+        _saveBagSizeToPrefs(amount);
+        setState(() {
+          widget.tokenAsset.bagSize = amount;
+        });
+      },
+    );
+  }
+
+  void _saveBagSizeToPrefs(int amount) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(widget.tokenAsset.symbol, amount);
+  }
+
+  Future<int> _getBagSizeFromPrefs() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(widget.tokenAsset.symbol) ?? -1;
   }
 }

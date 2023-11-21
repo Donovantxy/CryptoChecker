@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'base_token.dart';
 import 'liquidity.dart';
 import 'price_change.dart';

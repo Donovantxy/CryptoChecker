@@ -20,7 +20,7 @@ class DexScreenerService {
     throw Exception('Failed to fetch data -> getTokenPair');
   }
 
-  Future<TokenPair> getTokenPair(AssetToken symbolPair) async {
+  Future<TokenPair> getTokenPair(TokenAsset symbolPair) async {
     final response = await http.get(Uri.parse('https://api.dexscreener.com/latest/dex/pairs/${symbolPair.chainId}/${symbolPair.pairAddress}'));
     if (response.statusCode == 200) {
       var pairs = jsonDecode(response.body)['pairs'] as List;
