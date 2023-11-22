@@ -1,15 +1,16 @@
-
 class TokenAsset {
   String symbol;
   String icon;
+  int bagSize;
   String? chainId;
   String? pairAddress;
-  int bagSize;
+  bool? isVisible;
 
   TokenAsset({
     required this.symbol,
     required this.icon,
     this.bagSize = 0,
+    this.isVisible = true,
     this.chainId,
     this.pairAddress,
   });

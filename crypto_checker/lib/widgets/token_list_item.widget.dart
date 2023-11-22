@@ -31,7 +31,7 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
     super.build(context);
 
     return ListTile(
-        contentPadding: const EdgeInsets.all(10),
+        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         titleAlignment: ListTileTitleAlignment.center,
         leading: isLoading ? const CircularProgressIndicator(color: Colors.black38) : _getLeadingIcon(),
         title: Text(
@@ -41,7 +41,7 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
         subtitle: isLoading
             ? const Text('')
             : Padding(
-                padding: const EdgeInsets.only(top: 6),
+                padding: const EdgeInsets.only(top: 0),
                 child: Text(
                     isLoading
                         ? ''
@@ -71,8 +71,7 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
   }
 
   void _periodicPriceRefresh() {
-    _timer = Timer.periodic(Duration(seconds: 5), (_) {
-      print('isRefreshing');
+    _timer = Timer.periodic(const Duration(minutes: 5), (_) {
       _loadTokenData(isRefreshing: true);
     });
   }
@@ -83,9 +82,6 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
     int bagSize = isRefreshing ? widget.tokenAsset.bagSize : await _getBagSizeFromPrefs();
     setState(() {
       this.tokenPair = tokenPair;
-      if ( widget.tokenAsset.symbol == 'WPLS' || widget.tokenAsset.symbol == 'ADA' || widget.tokenAsset.symbol == 'SAND') {
-        print('${widget.tokenAsset.symbol} - ${tokenPair.priceUsd}');
-      }
       if (bagSize != -1) {
         widget.tokenAsset.bagSize = bagSize;
       }
@@ -100,7 +96,6 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
     } else {
       img = Image.asset(widget.tokenAsset.icon);
     }
-    // return Container(width: 64.0, height: 64.0, child: img);
     return SizedBox(width: 64.0, height: 64.0, child: img);
   }
 
@@ -109,8 +104,8 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
     return NumberFormat.simpleCurrency(locale: 'en_US', decimalDigits: 2).format(capital);
   }
 
-  BagSettingDialog _showBagSettingDialog(BuildContext context, String symbol) {
-    return BagSettingDialog(
+  BagSettingDialogWidget _showBagSettingDialog(BuildContext context, String symbol) {
+    return BagSettingDialogWidget(
       tokenSymbol: symbol,
       onBagSettingSubmit: (int amount) async {
         _saveBagSizeToPrefs(amount);

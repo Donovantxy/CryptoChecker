@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class BagSettingDialog extends StatefulWidget {
+class BagSettingDialogWidget extends StatefulWidget {
   final Function(int) onBagSettingSubmit;
   final String tokenSymbol;
   
-  const BagSettingDialog({
+  const BagSettingDialogWidget({
     super.key,
     required this.tokenSymbol,
     required this.onBagSettingSubmit,
   });
 
   @override
-  State<BagSettingDialog> createState() => _BagSettingDialogState();
+  State<BagSettingDialogWidget> createState() => _BagSettingDialogWidgetState();
 }
 
-class _BagSettingDialogState extends State<BagSettingDialog> {
+class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
   final TextEditingController _bagAmountController = TextEditingController();
 
   @override

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class TokenListWidget extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
-  TokenListWidget({super.key, this.padding = const EdgeInsets.all(20)});
+  TokenListWidget({super.key, this.padding = const EdgeInsets.fromLTRB(10, 5, 10, 10)});
 
   final tokenAssetList = TokenAssetList.get();
 
@@ -22,6 +22,8 @@ class TokenListWidget extends StatelessWidget {
                     itemCount: tokenAssetList.length,
                     itemBuilder: (ctx, index) {
                       return Card(
+                          margin: const EdgeInsets.only(bottom: 15, left: 6, right: 6),
+                          elevation: 2.0,
                           clipBehavior: Clip.hardEdge,
                           child: InkWell(
                             splashColor: Colors.blueGrey[200],
@@ -34,5 +36,4 @@ class TokenListWidget extends StatelessWidget {
           ],
         )));
   }
-
 }

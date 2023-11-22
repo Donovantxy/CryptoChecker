@@ -1,3 +1,4 @@
+import 'package:crypto_checker/views/main.view.dart';
 import 'package:crypto_checker/widgets/token_list.widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text("Crypto checker")),
-        body: TokenListWidget()
+        body: const MainView()
       ),
     );
   }
