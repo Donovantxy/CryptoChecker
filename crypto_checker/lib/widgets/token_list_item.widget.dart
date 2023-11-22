@@ -29,7 +29,12 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
+    /* 
+      return BlocBuilder<TokenAssetsBloc, TokenAssetsState>(builder: (ctx, state) {
+        if loaded all data return an ListTile like the one we already have below
+        return empty ListTile
+      }
+    */
     return ListTile(
         contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         titleAlignment: ListTileTitleAlignment.center,

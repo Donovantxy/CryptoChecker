@@ -1,6 +1,8 @@
+import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
+import 'package:crypto_checker/services/dexscreener/dexscreener.service.dart';
 import 'package:crypto_checker/views/main.view.dart';
-import 'package:crypto_checker/widgets/token_list.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,11 +13,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text("Crypto checker")),
-        body: const MainView()
-      ),
-    );
+    return BlocProvider(
+        create: (context) => TokenAssetsBloc(dexScreenerService: DexScreenerService()),
+        child: MaterialApp(
+          home: Scaffold(
+            appBar: AppBar(title: const Text("Crypto checker")),
+            body: const MainView(),
+          ),
+        ));
   }
 }

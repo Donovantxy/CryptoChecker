@@ -10,7 +10,6 @@ class MainView extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: double.infinity,
           color: Colors.pink[300],
           padding: const EdgeInsets.all(16),
           child: const WorthBarWidget(),

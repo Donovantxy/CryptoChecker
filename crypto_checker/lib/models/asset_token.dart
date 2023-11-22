@@ -5,6 +5,7 @@ class TokenAsset {
   String? chainId;
   String? pairAddress;
   bool? isVisible;
+  double? price;
 
   TokenAsset({
     required this.symbol,
@@ -13,15 +14,9 @@ class TokenAsset {
     this.isVisible = true,
     this.chainId,
     this.pairAddress,
+    this.price
   });
 
-  factory TokenAsset.fromJson(Map<String, dynamic> json) => TokenAsset(
-        symbol: json['symbol'] as String,
-        icon: json['icon'] as String,
-        chainId: json['chainId'] as String,
-        pairAddress: json['pairAddress'] as String,
-        bagSize: json['pairAddress'] as int,
-      );
 }
 
 mixin TokenAssetList {
