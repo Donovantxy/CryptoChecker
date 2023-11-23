@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
+import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/models/token_pair/token_pair.dart';
 import 'package:crypto_checker/services/dexscreener/dexscreener.service.dart';
 import 'package:crypto_checker/widgets/bag_setting_dialog.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,24 +38,21 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
         return empty ListTile
       }
     */
+    print(widget.tokenAsset.symbol);
     return ListTile(
         contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         titleAlignment: ListTileTitleAlignment.center,
-        leading: isLoading ? const CircularProgressIndicator(color: Colors.black38) : _getLeadingIcon(),
+        leading: _getLeadingIcon(),
         title: Text(
-          isLoading ? '' : widget.tokenAsset.symbol,
+          widget.tokenAsset.symbol,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: isLoading
-            ? const Text('')
-            : Padding(
-                padding: const EdgeInsets.only(top: 0),
-                child: Text(
-                    isLoading
-                        ? ''
-                        : 'price: \$${tokenPair.priceUsd}\nbag: ${widget.tokenAsset.bagSize}\ntotal: ${_getAsset()}',
-                    style: const TextStyle(height: 1.4)),
-              ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 0),
+          child: Text(
+              'price: \$${isLoading ? '0.00' : tokenPair.priceUsd}\nbag: ${widget.tokenAsset.bagSize}\ntotal: ${isLoading ? '\$0.00' : _getAsset()}',
+              style: const TextStyle(height: 1.4)),
+        ),
         onTap: () {
           showDialog<void>(
               context: context,
@@ -65,8 +65,8 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
   @override
   void initState() {
     super.initState();
-    _loadTokenData();
-    _periodicPriceRefresh();
+    // _loadTokenData();
+    // _periodicPriceRefresh();
   }
 
   @override
@@ -75,11 +75,11 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
     super.dispose();
   }
 
-  void _periodicPriceRefresh() {
-    _timer = Timer.periodic(const Duration(minutes: 5), (_) {
-      _loadTokenData(isRefreshing: true);
-    });
-  }
+  // void _periodicPriceRefresh() {
+  //   _timer = Timer.periodic(const Duration(minutes: 5), (_) {
+  //     // _loadTokenData(isRefreshing: true);
+  //   });
+  // }
 
   void _loadTokenData({bool isRefreshing = false}) async {
     const dexScreenerService = DexScreenerService();

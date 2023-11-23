@@ -1,22 +1,43 @@
+import 'package:equatable/equatable.dart';
+
 class TokenAsset {
   String symbol;
   String icon;
   int bagSize;
+  double price;
   String? chainId;
   String? pairAddress;
   bool? isVisible;
-  double? price;
 
   TokenAsset({
     required this.symbol,
     required this.icon,
     this.bagSize = 0,
+    this.price = 0.00,
     this.isVisible = true,
     this.chainId,
     this.pairAddress,
-    this.price
   });
 
+  TokenAsset copyWith({
+    String? symbol,
+    String? icon,
+    int? bagSize,
+    double? price,
+    String? chainId,
+    String? pairAddress,
+    bool? isVisible,
+  }) {
+    return TokenAsset(
+      symbol: symbol ?? this.symbol,
+      icon: icon ?? this.icon,
+      bagSize: bagSize ?? this.bagSize,
+      price: price ?? this.price,
+      chainId: chainId ?? this.chainId,
+      pairAddress: pairAddress ?? this.pairAddress,
+      isVisible: isVisible ?? this.isVisible,
+    );
+  }
 }
 
 mixin TokenAssetList {

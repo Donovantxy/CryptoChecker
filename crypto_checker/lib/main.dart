@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => TokenAssetsBloc(dexScreenerService: DexScreenerService()),
+        create: (context) => TokenAssetsBloc(dexScreenerService: const DexScreenerService()),
         child: MaterialApp(
           home: Scaffold(
             appBar: AppBar(title: const Text("Crypto checker")),

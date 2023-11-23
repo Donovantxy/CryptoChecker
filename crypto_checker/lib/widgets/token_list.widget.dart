@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
+import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_state.dart';
 import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/widgets/token_list_item.widget.dart';
@@ -9,8 +12,6 @@ class TokenListWidget extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
   TokenListWidget({super.key, this.padding = const EdgeInsets.all(10)});
-
-  final tokenAssetList = TokenAssetList.get();
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +25,22 @@ class TokenListWidget extends StatelessWidget {
   }
 
   BlocBuilder _loadTokenAssets() {
-    return BlocBuilder<TokenAssetsBloc, TokenAssetsState>(builder: (ctx, state) {
-      if (state is TokenAssetsInitialSt) {
-        return ListView.builder(
-            itemCount: state.initialTokens.length,
-            itemBuilder: (ctx, index) {
-              return Card(
-                  margin: const EdgeInsets.only(bottom: 15, left: 6, right: 6),
-                  elevation: 2.0,
-                  clipBehavior: Clip.hardEdge,
-                  child: InkWell(
-                    splashColor: Colors.blueGrey[200],
-                    child: TokenPairItem(
-                      key: ValueKey(tokenAssetList[index].pairAddress),
-                      tokenAsset: tokenAssetList[index],
-                    ),
-                  ));
-            });
-      }
-      return Container();
+    return BlocBuilder<TokenAssetsBloc, TokenAssetsBaseState>(builder: (ctx, state) {
+      return ListView.builder(
+          itemCount: state.tokens.length,
+          itemBuilder: (ctx, index) {
+            return Card(
+                margin: const EdgeInsets.only(bottom: 15, left: 6, right: 6),
+                elevation: 2.0,
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                  splashColor: Colors.blueGrey[200],
+                  child: TokenPairItem(
+                    key: ValueKey(state.tokens[index].pairAddress),
+                    tokenAsset: state.tokens[index],
+                  ),
+                ));
+          });
     });
   }
 }
