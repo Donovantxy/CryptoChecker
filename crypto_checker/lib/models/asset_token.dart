@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 
 class TokenAsset {
   String symbol;
@@ -38,6 +37,10 @@ class TokenAsset {
       isVisible: isVisible ?? this.isVisible,
     );
   }
+
+  @override
+  String toString() => '$symbol - $price - $bagSize';
+
 }
 
 mixin TokenAssetList {
@@ -56,8 +59,8 @@ mixin TokenAssetList {
       TokenAsset(
           symbol: 'BTC',
           icon: 'assets/images/token_icons/BTC.png',
-          chainId: 'bsc',
-          pairAddress: '0x8fE557749165ADF5F387Ad71CE0cFaB597348624'),
+          chainId: 'avalanche',
+          pairAddress: '0x2fD81391E30805Cc7F2Ec827013ce86dc591B806'),
       TokenAsset(
           symbol: 'ETH',
           icon: 'assets/images/token_icons/ETH.png',
@@ -92,7 +95,7 @@ mixin TokenAssetList {
           symbol: 'MATIC',
           icon: 'assets/images/token_icons/MATIC.png',
           chainId: 'ethereum',
-          pairAddress: '0x88C095C8Ba2C7A1353cF3D21E692c5d4d0F90793'),
+          pairAddress: '0x99C7550be72F05ec31c446cD536F8a29C89fdB77'),
       TokenAsset(
           symbol: 'SAND',
           icon: 'assets/images/token_icons/SAND.png',

@@ -1,16 +1,12 @@
-import 'dart:async';
-
 import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/models/token_pair/token_pair.dart';
-import 'package:crypto_checker/services/dexscreener/dexscreener.service.dart';
 import 'package:crypto_checker/widgets/bag_setting_dialog.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenPairItem extends StatefulWidget {
   final TokenAsset tokenAsset;
@@ -24,21 +20,13 @@ class TokenPairItem extends StatefulWidget {
 class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveClientMixin<TokenPairItem> {
   late TokenPair tokenPair;
   bool isLoading = true;
-  Timer? _timer;
-
+  
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    /* 
-      return BlocBuilder<TokenAssetsBloc, TokenAssetsState>(builder: (ctx, state) {
-        if loaded all data return an ListTile like the one we already have below
-        return empty ListTile
-      }
-    */
-    print(widget.tokenAsset.symbol);
     return ListTile(
         contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         titleAlignment: ListTileTitleAlignment.center,
@@ -50,7 +38,7 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 0),
           child: Text(
-              'price: \$${isLoading ? '0.00' : tokenPair.priceUsd}\nbag: ${widget.tokenAsset.bagSize}\ntotal: ${isLoading ? '\$0.00' : _getAsset()}',
+              'price: ${widget.tokenAsset.price == 0 ? '---' : '\$${widget.tokenAsset.price}'}\nbag: ${widget.tokenAsset.bagSize}\ntotal: ${_getAsset(widget.tokenAsset)}',
               style: const TextStyle(height: 1.4)),
         ),
         onTap: () {
@@ -60,38 +48,6 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
                 return _showBagSettingDialog(context, widget.tokenAsset.symbol);
               });
         });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // _loadTokenData();
-    // _periodicPriceRefresh();
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  // void _periodicPriceRefresh() {
-  //   _timer = Timer.periodic(const Duration(minutes: 5), (_) {
-  //     // _loadTokenData(isRefreshing: true);
-  //   });
-  // }
-
-  void _loadTokenData({bool isRefreshing = false}) async {
-    const dexScreenerService = DexScreenerService();
-    TokenPair tokenPair = await dexScreenerService.getTokenPair(widget.tokenAsset);
-    int bagSize = isRefreshing ? widget.tokenAsset.bagSize : await _getBagSizeFromPrefs();
-    setState(() {
-      this.tokenPair = tokenPair;
-      if (bagSize != -1) {
-        widget.tokenAsset.bagSize = bagSize;
-      }
-      isLoading = false;
-    });
   }
 
   Widget _getLeadingIcon() {
@@ -104,30 +60,18 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
     return SizedBox(width: 64.0, height: 64.0, child: img);
   }
 
-  String _getAsset() {
-    double capital = (widget.tokenAsset.bagSize * (tokenPair.priceUsd ?? 0.00));
+  String _getAsset(TokenAsset token) {
+    double capital = (token.bagSize * token.price);
     return NumberFormat.simpleCurrency(locale: 'en_US', decimalDigits: 2).format(capital);
   }
 
-  BagSettingDialogWidget _showBagSettingDialog(BuildContext context, String symbol) {
+  BagSettingDialogWidget _showBagSettingDialog(BuildContext ctx, String symbol) {
     return BagSettingDialogWidget(
       tokenSymbol: symbol,
       onBagSettingSubmit: (int amount) async {
-        _saveBagSizeToPrefs(amount);
-        setState(() {
-          widget.tokenAsset.bagSize = amount;
-        });
+        ctx.read<TokenAssetsBloc>().add(UpdateTokenBagSizeEvent(symbol, amount));
       },
     );
   }
 
-  void _saveBagSizeToPrefs(int amount) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(widget.tokenAsset.symbol, amount);
-  }
-
-  Future<int> _getBagSizeFromPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(widget.tokenAsset.symbol) ?? -1;
-  }
 }

@@ -1,9 +1,8 @@
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_state.dart';
-import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/widgets/token_list_item.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,10 +10,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class TokenListWidget extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
-  TokenListWidget({super.key, this.padding = const EdgeInsets.all(10)});
+  const  TokenListWidget({super.key, this.padding = const EdgeInsets.all(10)});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
+    _startPollingData(ctx);
     return Padding(
         padding: padding,
         child: Center(
@@ -26,6 +26,7 @@ class TokenListWidget extends StatelessWidget {
 
   BlocBuilder _loadTokenAssets() {
     return BlocBuilder<TokenAssetsBloc, TokenAssetsBaseState>(builder: (ctx, state) {
+
       return ListView.builder(
           itemCount: state.tokens.length,
           itemBuilder: (ctx, index) {
@@ -43,4 +44,12 @@ class TokenListWidget extends StatelessWidget {
           });
     });
   }
+
+  void _startPollingData(BuildContext ctx) {
+    BlocProvider.of<TokenAssetsBloc>(ctx).add(FetchTokenDataEvent());
+    Timer.periodic(const Duration(minutes: 1), (_) {
+      BlocProvider.of<TokenAssetsBloc>(ctx).add(FetchTokenDataEvent());
+    });
+  }
+
 }
