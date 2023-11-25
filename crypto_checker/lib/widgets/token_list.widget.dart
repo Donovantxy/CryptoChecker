@@ -13,8 +13,8 @@ class TokenListWidget extends StatelessWidget {
   const  TokenListWidget({super.key, this.padding = const EdgeInsets.all(10)});
 
   @override
-  Widget build(BuildContext ctx) {
-    _startPollingData(ctx);
+  Widget build(BuildContext context) {
+    _startPollingData(context);
     return Padding(
         padding: padding,
         child: Center(

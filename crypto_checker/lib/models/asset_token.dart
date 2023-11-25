@@ -1,16 +1,25 @@
 
-class TokenAsset {
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'asset_token.g.dart';
+
+@HiveType(typeId: 0)
+class TokenAsset extends HiveObject {
+  @HiveField(0)
   String symbol;
-  String icon;
-  int bagSize;
+  String? icon;
+  @HiveField(1)
+  double bagSize;
+  @HiveField(2)
   double price;
   String? chainId;
   String? pairAddress;
+  @HiveField(3)
   bool? isVisible;
 
   TokenAsset({
     required this.symbol,
-    required this.icon,
+    this.icon,
     this.bagSize = 0,
     this.price = 0.00,
     this.isVisible = true,
@@ -21,7 +30,7 @@ class TokenAsset {
   TokenAsset copyWith({
     String? symbol,
     String? icon,
-    int? bagSize,
+    double? bagSize,
     double? price,
     String? chainId,
     String? pairAddress,

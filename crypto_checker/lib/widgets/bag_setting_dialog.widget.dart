@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class BagSettingDialogWidget extends StatefulWidget {
-  final Function(int) onBagSettingSubmit;
+  final Function(double) onBagSettingSubmit;
   final String tokenSymbol;
-  
+  final double exsistingBag;
+
   const BagSettingDialogWidget({
     super.key,
     required this.tokenSymbol,
+    required this.exsistingBag,
     required this.onBagSettingSubmit,
   });
 
@@ -15,7 +17,13 @@ class BagSettingDialogWidget extends StatefulWidget {
 }
 
 class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
-  final TextEditingController _bagAmountController = TextEditingController();
+  late final TextEditingController _bagAmountController;
+
+  @override
+  void initState() {
+    super.initState();
+    _bagAmountController = TextEditingController(text: widget.exsistingBag.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +36,9 @@ class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
               controller: _bagAmountController,
               decoration: const InputDecoration(hintText: 'Enter the amount'),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              onChanged: (value) {
+                setState(() {});
+              },
             )
           ],
         ),
@@ -37,14 +48,20 @@ class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
           child: const Text('Cancel'),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        TextButton(
-          child: const Text('Set'),
-          onPressed: () {
-            int enteredBagSize = int.tryParse(_bagAmountController.text) ?? 0;
-            widget.onBagSettingSubmit(enteredBagSize);
-            Navigator.of(context).pop();
+        StatefulBuilder(
+          builder: (ctx, setState) {
+            return TextButton(
+              child: const Text('Set'),
+              onPressed: _bagAmountController.text.trim().isEmpty
+              ? null
+              : () {
+                double enteredBagSize = double.tryParse(_bagAmountController.text) ?? 0;
+                widget.onBagSettingSubmit(enteredBagSize);
+                Navigator.of(context).pop();
+              },
+            );
           },
-        ),
+        )
       ],
     );
   }

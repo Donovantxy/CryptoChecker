@@ -45,17 +45,17 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
           showDialog<void>(
               context: context,
               builder: (BuildContext context) {
-                return _showBagSettingDialog(context, widget.tokenAsset.symbol);
+                return _showBagSettingDialog(context, widget.tokenAsset);
               });
         });
   }
 
   Widget _getLeadingIcon() {
     Widget img;
-    if (widget.tokenAsset.icon.endsWith('.svg')) {
-      img = SvgPicture.asset(widget.tokenAsset.icon);
+    if (widget.tokenAsset.icon!.endsWith('.svg')) {
+      img = SvgPicture.asset(widget.tokenAsset.icon!);
     } else {
-      img = Image.asset(widget.tokenAsset.icon);
+      img = Image.asset(widget.tokenAsset.icon!);
     }
     return SizedBox(width: 64.0, height: 64.0, child: img);
   }
@@ -65,11 +65,12 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
     return NumberFormat.simpleCurrency(locale: 'en_US', decimalDigits: 2).format(capital);
   }
 
-  BagSettingDialogWidget _showBagSettingDialog(BuildContext ctx, String symbol) {
+  BagSettingDialogWidget _showBagSettingDialog(BuildContext ctx, TokenAsset token) {
     return BagSettingDialogWidget(
-      tokenSymbol: symbol,
-      onBagSettingSubmit: (int amount) async {
-        ctx.read<TokenAssetsBloc>().add(UpdateTokenBagSizeEvent(symbol, amount));
+      tokenSymbol: token.symbol,
+      exsistingBag: token.bagSize,
+      onBagSettingSubmit: (double amount) async {
+        ctx.read<TokenAssetsBloc>().add(UpdateTokenBagSizeEvent(token.symbol, amount));
       },
     );
   }

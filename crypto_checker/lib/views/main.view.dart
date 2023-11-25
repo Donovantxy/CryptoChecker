@@ -14,7 +14,7 @@ class MainView extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: const WorthBarWidget(),
         ),
-        Expanded(
+        const Expanded(
           child: TokenListWidget(),
         ),
       ],
