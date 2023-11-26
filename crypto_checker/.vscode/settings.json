@@ -1,9 +1,9 @@
 {
-  "editor.minimap.maxColumn": 130,
-  "dart.lineLength": 120,
+  "editor.minimap.maxColumn": 150,
+  "dart.lineLength": 150,
   "[dart]": {
     "editor.rulers": [
-      120
+      150
     ],
   },
   "cSpell.words": [

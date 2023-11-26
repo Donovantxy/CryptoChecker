@@ -33,7 +33,7 @@ class TokenListWidget extends StatelessWidget {
             return Card(
                 margin: const EdgeInsets.only(bottom: 15, left: 6, right: 6),
                 elevation: 2.0,
-                clipBehavior: Clip.hardEdge,
+                clipBehavior: Clip.antiAlias,
                 child: InkWell(
                   splashColor: Colors.blueGrey[200],
                   child: TokenPairItem(

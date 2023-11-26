@@ -20,7 +20,7 @@ class TokenAsset extends HiveObject {
   TokenAsset({
     required this.symbol,
     this.icon,
-    this.bagSize = 0.00,
+    this.bagSize = 0,
     this.price = 0.00,
     this.isVisible = true,
     this.chainId,

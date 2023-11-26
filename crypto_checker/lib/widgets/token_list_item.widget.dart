@@ -31,26 +31,45 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
     final FocusNode bagAmountFocusNode = FocusNode();
 
     return ListTile(
-        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-        titleAlignment: ListTileTitleAlignment.center,
-        leading: _getLeadingIcon(),
-        title: Text(
-          widget.tokenAsset.symbol,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Padding(
+      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      titleAlignment: ListTileTitleAlignment.center,
+      leading: _getLeadingIcon(),
+      title: Text(
+        widget.tokenAsset.symbol,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Padding(
           padding: const EdgeInsets.only(top: 0),
-          child: Text(getDetails(), style: const TextStyle(height: 1.4)),
-        ),
-        onTap: () {
-          showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return _showBagSettingDialog(context, widget.tokenAsset, bagAmountFocusNode);
-              });
-              bagAmountFocusNode.requestFocus();
-        },
-        );
+          // child: Text(getDetails(), style: const TextStyle(height: 1.4)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text('price: ${widget.tokenAsset.price == 0 ? '---' : '\$${widget.tokenAsset.price}'}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text('bag: ${NumberFormat.decimalPatternDigits(locale: 'en_US', decimalDigits: 2).format(widget.tokenAsset.bagSize)}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text(
+                  'total: ${_getAsset(widget.tokenAsset)}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          )),
+      onTap: () {
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return _showBagSettingDialog(context, widget.tokenAsset, bagAmountFocusNode);
+            });
+        bagAmountFocusNode.requestFocus();
+      },
+    );
   }
 
   Widget _getLeadingIcon() {
@@ -81,7 +100,7 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
 
   String getDetails() => '''
 price: ${widget.tokenAsset.price == 0 ? '---' : '\$${widget.tokenAsset.price}'}
-bag: ${widget.tokenAsset.bagSize}
+bag: ${NumberFormat.decimalPatternDigits(locale: 'en_US', decimalDigits: 2).format(widget.tokenAsset.bagSize)}
 total: ${_getAsset(widget.tokenAsset)}
 ''';
 }

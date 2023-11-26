@@ -28,7 +28,7 @@ class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
         ? IconButton(
             onPressed: () {
               setState(() {
-                _bagAmountController.text = '0.00';
+                _bagAmountController.text = '0';
               });
             },
             icon: const Icon(Icons.cancel_rounded),
@@ -39,7 +39,7 @@ class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
   @override
   void initState() {
     super.initState();
-    _bagAmountController = TextEditingController(text: widget.amount.toString());
+    _bagAmountController = TextEditingController(text: widget.amount == 0 ? '' : widget.amount.toString());
     _resetAmount = getResetAmountIcon(_bagAmountController.text);
   }
 
