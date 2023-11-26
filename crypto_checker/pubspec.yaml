@@ -30,16 +30,14 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
 
-flutter_icons:
+flutter_launcher_icons:
   android: "launcher_icon" 
   ios: true
-  image_path: "assets/icons/crypto_checker.png"
-  
+  image_path: "assets/icon/crypto_checker.png"
+  min_sdk_android: 21
+
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/token_icons/
-
-  min_sdk_android: 21
-

@@ -33,7 +33,7 @@ class MainApp extends StatelessWidget {
     return BlocProvider(
         create: (context) => assetBloc,
         child: MaterialApp(
-          theme: ThemeData(colorScheme: const ColorScheme.light().copyWith(primary: Colors.blueGrey.shade600)),
+          theme: ThemeData(colorScheme: const ColorScheme.light().copyWith(primary: const Color.fromARGB(255, 5, 95, 120))),
           home: Scaffold(
             appBar: AppBar(
               title: const Text("Crypto checker"),

@@ -42,7 +42,7 @@ class TokenListWidget extends StatelessWidget {
                   key: ValueKey(visibleTokens[index].pairAddress),
                   startActionPane: _startActionPane(visibleTokens[index].symbol),
                   child: InkWell(
-                    splashColor: Colors.blueGrey[200],
+                    splashColor: const Color.fromARGB(255, 5, 95, 120),
                     child: TokenPairItem(
                       key: ValueKey(visibleTokens[index].pairAddress),
                       tokenAsset: visibleTokens[index],
