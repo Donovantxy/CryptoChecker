@@ -76,7 +76,7 @@ class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
               onPressed: _bagAmountController.text.trim().isEmpty
                   ? null
                   : () {
-                      double enteredBagSize = double.tryParse(_bagAmountController.text) ?? 0.00;
+                      double enteredBagSize = double.tryParse(_bagAmountController.text) ?? 0;
                       widget.onBagSettingSubmit(enteredBagSize);
                       Navigator.of(context).pop();
                     },

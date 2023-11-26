@@ -13,6 +13,7 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
   TokenAssetsBloc({required this.dexScreenerService}) : super(TokenAssetsState(TokenAssetList.get())) {
     on<FetchTokenDataEvent>(_onFetchTokenDataEvent);
     on<UpdateTokenBagSizeEvent>(_onUpdateTokenBagSizeEvent);
+    on<HideTokenEvent>(_onHideTokenEvent);
   }
 
   Future<void> _onFetchTokenDataEvent(FetchTokenDataEvent ev, Emitter<TokenAssetsBaseState> emit) async {
@@ -44,6 +45,16 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
     token.bagSize = ev.amount;
     // I can use save() here because this event handler will always be triggered after at _onFetchTokenDataEvent 
     await token.save();
+    emit(TokenAssetsState(state.tokens));
+  }
+
+  Future<void> _onHideTokenEvent(HideTokenEvent ev, Emitter<TokenAssetsBaseState> emit) async {
+    state.tokens.forEach((element) {
+      if ( element.symbol == ev.symbol ) {
+        element.isVisible = false;
+        return;
+      }
+    });
     emit(TokenAssetsState(state.tokens));
   }
 

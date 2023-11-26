@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.1.5 <4.0.0'
 
 dependencies:
+  font_awesome_flutter: 10.6.0
   flutter_slidable: ^3.0.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -29,8 +30,16 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
 
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/icons/crypto_checker.png"
+  
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/token_icons/
+
+  min_sdk_android: 21
+
