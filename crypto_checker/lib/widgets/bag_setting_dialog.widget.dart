@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class BagSettingDialogWidget extends StatefulWidget {
   final Function(double) onBagSettingSubmit;
   final String tokenSymbol;
-  final double exsistingBag;
+  final double amount;
+  final FocusNode focusNode;
 
   const BagSettingDialogWidget({
     super.key,
+    required this.focusNode,
     required this.tokenSymbol,
-    required this.exsistingBag,
+    required this.amount,
     required this.onBagSettingSubmit,
   });
 
@@ -19,25 +21,45 @@ class BagSettingDialogWidget extends StatefulWidget {
 class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
   late final TextEditingController _bagAmountController;
 
+  Widget? _resetAmount;
+
+  Widget getResetAmountIcon(String value) {
+    return !RegExp(r'^0(.0)?0*$').hasMatch(value)
+        ? IconButton(
+            onPressed: () {
+              setState(() {
+                _bagAmountController.text = '0.00';
+              });
+            },
+            icon: const Icon(Icons.cancel_rounded),
+          )
+        : const Icon(null);
+  }
+
   @override
   void initState() {
     super.initState();
-    _bagAmountController = TextEditingController(text: widget.exsistingBag.toString());
+    _bagAmountController = TextEditingController(text: widget.amount.toString());
+    _resetAmount = getResetAmountIcon(_bagAmountController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Set the amount of ${widget.tokenSymbol}'),
+      title: Text('Amount of ${widget.tokenSymbol} you own'),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
             TextField(
               controller: _bagAmountController,
-              decoration: const InputDecoration(hintText: 'Enter the amount'),
+              focusNode: widget.focusNode,
+              decoration: InputDecoration(
+                hintText: 'amount here',
+                suffixIcon: _resetAmount,
+              ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               onChanged: (value) {
-                setState(() {});
+                setState(() => _resetAmount = getResetAmountIcon(value));
               },
             )
           ],
@@ -51,14 +73,14 @@ class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
         StatefulBuilder(
           builder: (ctx, setState) {
             return TextButton(
-              child: const Text('Set'),
               onPressed: _bagAmountController.text.trim().isEmpty
-              ? null
-              : () {
-                double enteredBagSize = double.tryParse(_bagAmountController.text) ?? 0;
-                widget.onBagSettingSubmit(enteredBagSize);
-                Navigator.of(context).pop();
-              },
+                  ? null
+                  : () {
+                      double enteredBagSize = double.tryParse(_bagAmountController.text) ?? 0.00;
+                      widget.onBagSettingSubmit(enteredBagSize);
+                      Navigator.of(context).pop();
+                    },
+              child: const Text('Set'),
             );
           },
         )

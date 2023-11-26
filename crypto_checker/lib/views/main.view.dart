@@ -7,14 +7,9 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        Container(
-          color: Colors.pink[300],
-          padding: const EdgeInsets.all(16),
-          child: const WorthBarWidget(),
-        ),
-        const Expanded(
+        Expanded(
           child: TokenListWidget(),
         ),
       ],
