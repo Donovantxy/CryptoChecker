@@ -6,6 +6,7 @@ import 'package:crypto_checker/blocs/token_assets/token_assets_state.dart';
 import 'package:crypto_checker/widgets/token_list_item.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TokenListWidget extends StatelessWidget {
   final EdgeInsetsGeometry padding;
@@ -34,11 +35,14 @@ class TokenListWidget extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 15, left: 6, right: 6),
                 elevation: 2.0,
                 clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  splashColor: Colors.blueGrey[200],
-                  child: TokenPairItem(
-                    key: ValueKey(state.tokens[index].pairAddress),
-                    tokenAsset: state.tokens[index],
+                child: Slidable(
+                  key: ValueKey(state.tokens[index].pairAddress),
+                  child: InkWell(
+                    splashColor: Colors.blueGrey[200],
+                    child: TokenPairItem(
+                      key: ValueKey(state.tokens[index].pairAddress),
+                      tokenAsset: state.tokens[index],
+                    ),
                   ),
                 ));
           });
