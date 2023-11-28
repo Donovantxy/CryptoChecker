@@ -49,12 +49,12 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
   }
 
   Future<void> _onHideTokenEvent(HideTokenEvent ev, Emitter<TokenAssetsBaseState> emit) async {
-    state.tokens.forEach((element) {
-      if ( element.symbol == ev.symbol ) {
-        element.isVisible = false;
-        return;
+    for ( var token in state.tokens ) {
+      if ( token.symbol == ev.symbol ) {
+        token.isVisible = false;
+        break;
       }
-    });
+    }
     emit(TokenAssetsState(state.tokens));
   }
 
