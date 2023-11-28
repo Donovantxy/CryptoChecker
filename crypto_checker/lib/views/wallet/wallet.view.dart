@@ -9,7 +9,7 @@ class WalletView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CcScaffoldWidget(
-      appBar: CcAppBar.getAppBar(context),
+      appBar: CcAppBar.getAppBar(context, 'Wallet'),
       body: const Column(
         children: [
           Expanded(

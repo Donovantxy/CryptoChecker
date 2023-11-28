@@ -6,9 +6,9 @@ import 'package:intl/intl.dart';
 
 class CcAppBar {
   
-  static AppBar getAppBar(BuildContext context) {
+  static AppBar getAppBar(BuildContext context, String title) {
     return AppBar(
-      title: const Text("Crypto checker"),
+      title: Text(title),
       actions: [
         BlocBuilder<TokenAssetsBloc, TokenAssetsBaseState>(builder: (ctx, state) {
           final worth = state.tokens.map((token) => token.price * token.bagSize).reduce((value, element) => value + element);
