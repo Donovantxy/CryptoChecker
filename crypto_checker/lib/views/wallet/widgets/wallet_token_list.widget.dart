@@ -4,15 +4,15 @@ import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_state.dart';
 import 'package:crypto_checker/models/asset_token.dart';
-import 'package:crypto_checker/widgets/token_list_item.widget.dart';
+import 'package:crypto_checker/views/wallet/widgets/wallet_token_list_item.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class TokenListWidget extends StatelessWidget {
+class WalletTokenListWidget extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
-  const TokenListWidget({super.key, this.padding = const EdgeInsets.all(10)});
+  const WalletTokenListWidget({super.key, this.padding = const EdgeInsets.all(10)});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class TokenListWidget extends StatelessWidget {
                   startActionPane: _startActionPane(visibleTokens[index].symbol),
                   child: InkWell(
                     splashColor: const Color.fromARGB(255, 5, 95, 120),
-                    child: TokenPairItem(
+                    child: WalletTokenListItem(
                       key: ValueKey(visibleTokens[index].pairAddress),
                       tokenAsset: visibleTokens[index],
                     ),
@@ -67,7 +67,7 @@ class TokenListWidget extends StatelessWidget {
       children: [
         SlidableAction(
           onPressed: (BuildContext context) {
-            context.read<TokenAssetsBloc>().add(HideTokenEvent(symbol));
+            context.read<TokenAssetsBloc>().add(ToggleTokenVisibilityEvent(symbol));
           },
           backgroundColor: Colors.red.shade900,
           foregroundColor: Colors.white,

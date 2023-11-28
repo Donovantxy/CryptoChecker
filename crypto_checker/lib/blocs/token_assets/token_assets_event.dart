@@ -4,9 +4,9 @@ class LoadTokenAssetsEv extends TokenAssetsEvent {}
 
 class FetchTokenDataEvent extends TokenAssetsEvent {}
 
-class HideTokenEvent extends TokenAssetsEvent {
+class ToggleTokenVisibilityEvent extends TokenAssetsEvent {
   final String symbol;
-  HideTokenEvent(this.symbol);
+  ToggleTokenVisibilityEvent(this.symbol);
 }
 
 class UpdateTokenBagSizeEvent extends TokenAssetsEvent {

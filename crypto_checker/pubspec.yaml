@@ -35,9 +35,10 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/icon/crypto_checker.png"
   min_sdk_android: 21
-
+  
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/token_icons/
+    - assets/images/icons/

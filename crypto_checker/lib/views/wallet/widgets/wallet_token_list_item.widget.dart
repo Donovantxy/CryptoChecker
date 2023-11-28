@@ -2,22 +2,22 @@ import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/models/token_pair/token_pair.dart';
-import 'package:crypto_checker/widgets/bag_setting_dialog.widget.dart';
+import 'package:crypto_checker/views/wallet/widgets/bag_setting_dialog.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
-class TokenPairItem extends StatefulWidget {
+class WalletTokenListItem extends StatefulWidget {
   final TokenAsset tokenAsset;
 
-  const TokenPairItem({super.key, required this.tokenAsset});
+  const WalletTokenListItem({super.key, required this.tokenAsset});
 
   @override
-  State<TokenPairItem> createState() => _TokenPairItemState();
+  State<WalletTokenListItem> createState() => _WalletTokenListItemState();
 }
 
-class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveClientMixin<TokenPairItem> {
+class _WalletTokenListItemState extends State<WalletTokenListItem> with AutomaticKeepAliveClientMixin<WalletTokenListItem> {
   late TokenPair tokenPair;
   bool isLoading = true;
 
@@ -40,7 +40,6 @@ class _TokenPairItemState extends State<TokenPairItem> with AutomaticKeepAliveCl
       ),
       subtitle: Padding(
           padding: const EdgeInsets.only(top: 0),
-          // child: Text(getDetails(), style: const TextStyle(height: 1.4)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

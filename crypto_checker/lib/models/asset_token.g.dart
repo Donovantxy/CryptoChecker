@@ -20,7 +20,7 @@ class TokenAssetAdapter extends TypeAdapter<TokenAsset> {
       symbol: fields[0] as String,
       bagSize: fields[1] as double,
       price: fields[2] as double,
-      isVisible: fields[3] as bool?,
+      isVisible: fields[3] as bool,
     );
   }
 

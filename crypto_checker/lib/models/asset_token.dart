@@ -15,7 +15,7 @@ class TokenAsset extends HiveObject {
   String? chainId;
   String? pairAddress;
   @HiveField(3)
-  bool? isVisible;
+  bool isVisible;
 
   TokenAsset({
     required this.symbol,
@@ -48,7 +48,7 @@ class TokenAsset extends HiveObject {
   }
 
   @override
-  String toString() => '$symbol - $price - $bagSize';
+  String toString() => '$symbol - $price - $bagSize - $isVisible';
 
 }
 

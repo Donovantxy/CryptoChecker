@@ -13,7 +13,7 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
   TokenAssetsBloc({required this.dexScreenerService}) : super(TokenAssetsState(TokenAssetList.get())) {
     on<FetchTokenDataEvent>(_onFetchTokenDataEvent);
     on<UpdateTokenBagSizeEvent>(_onUpdateTokenBagSizeEvent);
-    on<HideTokenEvent>(_onHideTokenEvent);
+    on<ToggleTokenVisibilityEvent>(_onToggleTokenVisibilityEvent);
   }
 
   Future<void> _onFetchTokenDataEvent(FetchTokenDataEvent ev, Emitter<TokenAssetsBaseState> emit) async {
@@ -43,19 +43,17 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
   Future<void> _onUpdateTokenBagSizeEvent(UpdateTokenBagSizeEvent ev, Emitter<TokenAssetsBaseState> emit) async {
     TokenAsset token = state.tokens.firstWhere((token) => token.symbol == ev.symbol);
     token.bagSize = ev.amount;
-    // I can use save() here because this event handler will always be triggered after at _onFetchTokenDataEvent 
+    // I can use save() here because this event handler will always be triggered after at _onFetchTokenDataEvent
     await token.save();
     emit(TokenAssetsState(state.tokens));
   }
 
-  Future<void> _onHideTokenEvent(HideTokenEvent ev, Emitter<TokenAssetsBaseState> emit) async {
-    state.tokens.forEach((element) {
-      if ( element.symbol == ev.symbol ) {
-        element.isVisible = false;
-        return;
-      }
-    });
+  Future<void> _onToggleTokenVisibilityEvent(ToggleTokenVisibilityEvent ev, Emitter<TokenAssetsBaseState> emit) async {
+    TokenAsset token = state.tokens.firstWhere((token) => token.symbol == ev.symbol);
+    if (token.symbol == ev.symbol) {
+      token.isVisible = !token.isVisible;
+      await token.save();
+    }
     emit(TokenAssetsState(state.tokens));
   }
-
 }
