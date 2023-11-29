@@ -46,6 +46,7 @@ class TokenListWidget extends StatelessWidget {
               elevation: 2.0,
               clipBehavior: Clip.antiAlias,
               child: ListTile(
+                tileColor: Colors.white,
                 contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                 titleAlignment: ListTileTitleAlignment.center,
                 leading: _getLeadingIcon(state.tokens[index]),

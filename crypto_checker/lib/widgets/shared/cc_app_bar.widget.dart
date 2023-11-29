@@ -8,10 +8,12 @@ class CcAppBar {
   
   static AppBar getAppBar(BuildContext context, String title) {
     return AppBar(
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      foregroundColor: Colors.white,
       title: Text(title),
       actions: [
         BlocBuilder<TokenAssetsBloc, TokenAssetsBaseState>(builder: (ctx, state) {
-          final worth = state.tokens.map((token) => token.price * token.bagSize).reduce((value, element) => value + element);
+          final worth = state.tokens.map((token) => token.price * token.bagSize).fold(0.0, (value, element) => value + element);
           return Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 20),

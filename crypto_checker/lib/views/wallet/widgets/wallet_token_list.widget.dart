@@ -9,16 +9,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class WalletTokenListWidget extends StatelessWidget {
+class WalletTokenListWidget extends StatefulWidget {
   final EdgeInsetsGeometry padding;
 
   const WalletTokenListWidget({super.key, this.padding = const EdgeInsets.all(10)});
 
   @override
+  State<WalletTokenListWidget> createState() => _WalletTokenListWidgetState();
+}
+
+class _WalletTokenListWidgetState extends State<WalletTokenListWidget> {
+  late Timer _timer;
+
+  @override
   Widget build(BuildContext context) {
     _startPollingData(context);
     return Padding(
-      padding: padding,
+      padding: widget.padding,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -28,9 +35,15 @@ class WalletTokenListWidget extends StatelessWidget {
     );
   }
 
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   BlocBuilder _loadTokenAssets() {
     return BlocBuilder<TokenAssetsBloc, TokenAssetsBaseState>(builder: (ctx, state) {
-      List<TokenAsset> visibleTokens = state.tokens.where((token) => token.isVisible!).toList();
+      List<TokenAsset> visibleTokens = state.tokens.where((token) => token.isVisible).toList();
       return ListView.builder(
           itemCount: visibleTokens.length,
           itemBuilder: (ctx, index) {
@@ -55,14 +68,14 @@ class WalletTokenListWidget extends StatelessWidget {
 
   void _startPollingData(BuildContext ctx) {
     BlocProvider.of<TokenAssetsBloc>(ctx).add(FetchTokenDataEvent());
-    Timer.periodic(const Duration(minutes: 1), (_) {
+    _timer = Timer.periodic(const Duration(minutes: 1), (_) {
       BlocProvider.of<TokenAssetsBloc>(ctx).add(FetchTokenDataEvent());
     });
   }
 
   ActionPane _startActionPane(String symbol) {
     return ActionPane(
-      extentRatio: 0.15,
+      extentRatio: 0.24,
       motion: const BehindMotion(),
       children: [
         SlidableAction(

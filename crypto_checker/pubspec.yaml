@@ -48,6 +48,5 @@ flutter:
 flutter_native_splash:
   background_image: assets/images/crypto_currency_splash-screen.png
   android_12:
-    # image: assets/images/crypto_currency_splash-icon.png
-    branding: assets/images/crypto_currency_splash-icon.png
+    image: assets/images/crypto_currency_splash-icon.png
     color: "#03556b"

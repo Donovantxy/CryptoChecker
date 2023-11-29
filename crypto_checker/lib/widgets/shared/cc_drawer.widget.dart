@@ -75,7 +75,7 @@ class _CcDrawerWidgetState extends State<CcDrawerWidget> with RouteAware {
       ),
       onTap: () {
         Navigator.of(ctx).pop(); // Close the drawer
-        Navigator.of(ctx).pushNamed(route);
+        Navigator.of(ctx).pushReplacementNamed(route);
       },
     );
   }

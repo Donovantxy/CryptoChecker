@@ -1,4 +1,5 @@
 import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
+import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/routes.dart';
 import 'package:crypto_checker/services/dexscreener/dexscreener.service.dart';
@@ -28,6 +29,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TokenAssetsBloc assetBloc = TokenAssetsBloc(dexScreenerService: const DexScreenerService());
+    assetBloc.add(InitTokenAssetsEvent());
     return BlocProvider(
         create: (context) => assetBloc,
         child: MaterialApp(

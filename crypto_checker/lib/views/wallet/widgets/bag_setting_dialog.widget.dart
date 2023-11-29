@@ -46,6 +46,7 @@ class _BagSettingDialogWidgetState extends State<BagSettingDialogWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      surfaceTintColor: Colors.white,
       title: Text('Amount of ${widget.tokenSymbol} you own'),
       content: SingleChildScrollView(
         child: ListBody(

@@ -31,6 +31,7 @@ class _WalletTokenListItemState extends State<WalletTokenListItem> with Automati
     final FocusNode bagAmountFocusNode = FocusNode();
 
     return ListTile(
+      tileColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
       titleAlignment: ListTileTitleAlignment.center,
       leading: _getLeadingIcon(),

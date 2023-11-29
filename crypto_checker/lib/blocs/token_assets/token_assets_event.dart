@@ -1,6 +1,6 @@
 abstract class TokenAssetsEvent {}
 
-class LoadTokenAssetsEv extends TokenAssetsEvent {}
+class InitTokenAssetsEvent extends TokenAssetsEvent {}
 
 class FetchTokenDataEvent extends TokenAssetsEvent {}
 
