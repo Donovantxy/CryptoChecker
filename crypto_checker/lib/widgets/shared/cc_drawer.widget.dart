@@ -70,7 +70,7 @@ class _CcDrawerWidgetState extends State<CcDrawerWidget> with RouteAware {
         children: <Widget>[
           Icon(icon, size: 40, color: Theme.of(ctx).colorScheme.primary),
           const SizedBox(width: 8.0),
-          Text(name),
+          Text(name, style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold),),
         ],
       ),
       onTap: () {
@@ -90,7 +90,9 @@ class _CcDrawerWidgetState extends State<CcDrawerWidget> with RouteAware {
           if (currentRoute != AppRoutes.walletView)
             _getDrawerItem(context, 'Wallet', Icons.account_balance_wallet_rounded, AppRoutes.walletView)
           else
-            _getDrawerItem(context, 'Token list', Icons.token, AppRoutes.tokenListView)
+            _getDrawerItem(context, 'Token list', Icons.token, AppRoutes.tokenListView),
+          Divider(color: Colors.grey.shade300),
+          _getDrawerItem(context, 'Settings', Icons.settings, AppRoutes.settingsView)
         ],
       ),
     );

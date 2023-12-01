@@ -1,5 +1,4 @@
 import 'package:crypto_checker/views/wallet/widgets/wallet_token_list.widget.dart';
-import 'package:crypto_checker/widgets/shared/cc_app_bar.widget.dart';
 import 'package:crypto_checker/widgets/shared/cc_scaffold.widget.dart';
 import 'package:flutter/material.dart';
 
@@ -8,15 +7,6 @@ class WalletView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CcScaffoldWidget(
-      appBar: CcAppBar.getAppBar(context, 'Wallet'),
-      body: const Column(
-        children: [
-          Expanded(
-            child: WalletTokenListWidget(),
-          ),
-        ],
-      ),
-    );
+    return const CcScaffoldWidget(appBarTitle: 'Wallet', body: WalletTokenListWidget());
   }
 }
