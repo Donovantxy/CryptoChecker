@@ -88,11 +88,12 @@ class _CcDrawerWidgetState extends State<CcDrawerWidget> with RouteAware {
         children: [
           _getheader(context),
           if (currentRoute != AppRoutes.walletView)
-            _getDrawerItem(context, 'Wallet', Icons.account_balance_wallet_rounded, AppRoutes.walletView)
-          else
+            _getDrawerItem(context, 'Wallet', Icons.account_balance_wallet_rounded, AppRoutes.walletView),
+          if ( currentRoute != AppRoutes.tokenListView )
             _getDrawerItem(context, 'Token list', Icons.token, AppRoutes.tokenListView),
           Divider(color: Colors.grey.shade300),
-          _getDrawerItem(context, 'Financial', Icons.settings, AppRoutes.settingsView)
+          if ( currentRoute != AppRoutes.financialView )
+            _getDrawerItem(context, 'Financial', Icons.settings, AppRoutes.financialView)
         ],
       ),
     );

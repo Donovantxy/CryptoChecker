@@ -7,12 +7,12 @@ import 'package:flutter/widgets.dart';
 class AppRoutes {
   static String walletView = '/';
   static String tokenListView = '/list';
-  static String settingsView = '/financial';
+  static String financialView = '/financial';
   static Map<String, WidgetBuilder> getRoutes() {
     return {
       AppRoutes.walletView: (context) => const WalletView(),
       AppRoutes.tokenListView: (context) => const TokenListView(),
-      AppRoutes.settingsView: (context) => const FinancialView(),
+      AppRoutes.financialView: (context) => const FinancialView(),
     };
   }
 }

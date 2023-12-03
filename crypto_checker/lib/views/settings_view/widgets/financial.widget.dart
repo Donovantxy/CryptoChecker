@@ -31,6 +31,12 @@ class _FinancialWidgetState extends State<FinancialWidget> {
 
   @override
   void initState() {
+    
+    super.initState();
+    initStateAsync();
+  }
+
+  Future<void> initStateAsync() async {
     _boxFinancial = Hive.box<FinancialRecord>(HIVE_FINANCIAL_BOX_NAME);
     final boxTokenAsset = Hive.box<TokenAsset>(HIVE_TOKENASSET_BOX_NAME);
 
@@ -41,28 +47,31 @@ class _FinancialWidgetState extends State<FinancialWidget> {
       _financialRecord = _boxFinancial.get(_FINANCIAL_RECORD_KEY)!;
     }
 
-    setConversionRate(_financialRecord.currency);
+    await setConversionRate(_financialRecord.currency);
 
     boxTokenAsset.keys.forEach((key) {
       TokenAsset? token = boxTokenAsset.get(key)!;
       worth += token.bagSize * token.price;
     });
-    netGain = getNetGain(_conversionRate);
-    toReinvestInUSD = double.parse((worth * _financialRecord.toReinvestPerc / 100).toString()).toStringAsFixed(2);
 
-    super.initState();
+    if (mounted) {
+      setState(() {
+        netGain = getNetGain();
+      });
+    }
+
+    toReinvestInUSD = double.parse((worth * _financialRecord.toReinvestPerc / 100).toString()).toStringAsFixed(2);
   }
 
-  setConversionRate(currency) async {
+  Future<void> setConversionRate(currency) async {
     _conversionRate = 1;
-    if (_financialRecord.currency != _availableCurrencies[r'$']) {
+    if (_financialRecord.currency != r'$') {
       CurrencyConversion conversion = await settingsService.getConversionFromUSD(_availableCurrencies[_financialRecord.currency]!);
       _conversionRate = conversion.rates![_availableCurrencies[_financialRecord.currency]]!;
     }
   }
 
-  double getNetGain(double conversionRate) =>
-      worth * ((100 - _financialRecord.toReinvestPerc) / 100) * ((100 - _financialRecord.taxPerc) / 100) * conversionRate;
+  double getNetGain() => worth * ((100 - _financialRecord.toReinvestPerc) / 100) * ((100 - _financialRecord.taxPerc) / 100) * _conversionRate;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +94,7 @@ class _FinancialWidgetState extends State<FinancialWidget> {
                   onChanged: (value) {
                     setState(() {
                       _financialRecord.taxPerc = value.round();
-                      netGain = getNetGain(_conversionRate);
+                      netGain = getNetGain();
                     });
                   },
                   onChangeEnd: (value) async {
@@ -106,7 +115,7 @@ class _FinancialWidgetState extends State<FinancialWidget> {
                     setState(() {
                       _financialRecord.toReinvestPerc = value.round();
                       toReinvestInUSD = double.parse((worth * _financialRecord.toReinvestPerc / 100).toString()).toStringAsFixed(2);
-                      netGain = getNetGain(_conversionRate);
+                      netGain = getNetGain();
                     });
                   },
                   onChangeEnd: (value) async {
@@ -143,15 +152,14 @@ class _FinancialWidgetState extends State<FinancialWidget> {
                               );
                             }).toList(),
                             onChanged: (newValue) async {
-                              double conversionRate = 1;
                               if (_financialRecord.currency != newValue) {
                                 final conversion = await settingsService.getConversionFromUSD(_availableCurrencies[newValue]!);
                                 if (conversion.rates != null) {
                                   _financialRecord.currency = newValue!;
-                                  conversionRate = conversion.rates![_availableCurrencies[_financialRecord.currency]]!;
+                                  _conversionRate = conversion.rates![_availableCurrencies[_financialRecord.currency]]!;
                                   await _financialRecord.save();
                                   setState(() {
-                                    netGain = getNetGain(conversionRate) * conversionRate;
+                                    netGain = getNetGain();
                                   });
                                 }
                               }
