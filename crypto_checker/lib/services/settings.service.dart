@@ -13,9 +13,7 @@ class SettingsService {
       }
       return CurrencyConversion(rates: { 'USD': 1.00 });
     } catch (err) {
-      print('ERROR');
-      print(err);
-      return CurrencyConversion(date: DateFormat('dd/MM/yyyy').format(DateTime.now()));
+      return CurrencyConversion(date: DateFormat('dd/MM/yyyy').format(DateTime.now()), rates: { 'USD': 1.00 });
     }
   }
 }
