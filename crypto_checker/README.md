@@ -27,31 +27,31 @@ The app serves as a comprehensive tool for crypto asset management, offering vis
       <img src="screenshots/wallet-list.jpg" alt="Alt text" width="200"/>
     </td>
     <td>
-      <p align="center">Image 2 Description</p>
+      <p align="center">Order by</p>
       <img src="screenshots/order-by-drop-down.jpg" alt="Alt text" width="215"/>
     </td>
     <td>
-      <p align="center">Image 3 Description</p>
+      <p align="center">Hiding token</p>
       <img src="screenshots/wallet-list-with-removal.jpg" alt="Alt text" width="200"/>
     </td>
   </tr>
   <tr>
     <td>
-      <p align="center">Wallet list</p>
-      <img src="screenshots/order-by-drop-down.jpg" alt="Alt text" width="215"/>
+      <p align="center">Bag amount setting dialog</p>
+      <img src="screenshots/bag-setting-dialog.jpg" alt="Alt text" width="215"/>
     </td>
     <td>
-      <p align="center">Image 3 Description</p>
+      <p align="center">Drawer</p>
       <img src="screenshots/drawer.jpg" alt="Alt text" width="200"/>
     </td>
     <td>
-      <p align="center">Image 2 Description</p>
+      <p align="center">Token visibility list</p>
       <img src="screenshots/token-list-visibility.jpg" alt="Alt text" width="200"/>
     </td>
   </tr>
   <tr>
     <td>
-      <p align="center">Wallet list</p>
+      <p align="center">Financial settings</p>
       <img src="screenshots/financial-screen.jpg" alt="Alt text" width="200"/>
     </td>
     <td></td>
