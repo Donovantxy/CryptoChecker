@@ -7,6 +7,6 @@ class FinancialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CcScaffoldWidget(appBarTitle: 'Financial', body: FinancialWidget());
+    return const CcScaffoldWidget(appBarTitle: 'Financial', body: FinancialWidget(), showActions: false);
   }
 }

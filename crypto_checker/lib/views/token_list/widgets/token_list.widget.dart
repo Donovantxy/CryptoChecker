@@ -37,7 +37,6 @@ class TokenListWidget extends StatelessWidget {
 
   BlocBuilder _loadTokens() {
     return BlocBuilder<TokenAssetsBloc, TokenAssetsBaseState>(builder: (ctx, state) {
-
       return ListView.builder(
           itemCount: state.tokens.length,
           itemBuilder: (ctx, index) {

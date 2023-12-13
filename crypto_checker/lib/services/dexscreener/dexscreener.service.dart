@@ -3,6 +3,7 @@ import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/models/token_pair/token_pair.dart';
 import 'package:http/http.dart' as http;
 
+// https://docs.dexscreener.com/api/reference
 class DexScreenerService {
   final String quoteToken = 'USDT';
 

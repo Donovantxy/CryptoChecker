@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class SettingsService {
+  // https://www.frankfurter.app/docs/
   Future<CurrencyConversion> getConversionFromUSD(String toCurrency) async {
     try {
       if (toCurrency != 'USD') {
