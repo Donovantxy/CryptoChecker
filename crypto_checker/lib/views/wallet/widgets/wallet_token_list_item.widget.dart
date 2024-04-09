@@ -46,7 +46,7 @@ class _WalletTokenListItemState extends State<WalletTokenListItem> with Automati
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Text('price: ${widget.tokenAsset.price == 0 ? '---' : '\$${widget.tokenAsset.price}'}'),
+                child: Text('price: ${widget.tokenAsset.price == 0 ? '---' : '${_floatDigits(widget.tokenAsset.price, 6)}'}'),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
@@ -84,7 +84,12 @@ class _WalletTokenListItemState extends State<WalletTokenListItem> with Automati
 
   String _getAsset(TokenAsset token) {
     double capital = (token.bagSize * token.price);
-    return NumberFormat.simpleCurrency(locale: 'en_US', decimalDigits: 2).format(capital);
+    return _floatDigits(capital, 2);
+  }
+
+  String _floatDigits(double price, int decimalDigits) {
+    int decimal = price > 0.99 ? 2 : decimalDigits;
+    return NumberFormat.simpleCurrency(locale: 'en_US', decimalDigits: decimal).format(price);
   }
 
   BagSettingDialogWidget _showBagSettingDialog(BuildContext ctx, TokenAsset token, final FocusNode bagAmountFocusNode) {

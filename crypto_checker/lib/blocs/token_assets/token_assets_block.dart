@@ -42,6 +42,7 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
   }
 
   Future<void> _onInitTokenAssetsEvent(InitTokenAssetsEvent ev, Emitter<TokenAssetsBaseState> emit) async {
+    // await box.clear();
     TokenAssetList.get().forEach((token) {
       var tokenFromBox = box.get(token.symbol);
       if (tokenFromBox != null) {
@@ -73,21 +74,26 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
 
   Future<void> _onFetchTokenDataEvent(FetchTokenDataEvent ev, Emitter<TokenAssetsBaseState> emit) async {
     try {
-      List<Future<void>> fetchTokensData = state.tokens.map((token) async {
-        try {
-          final pair = await dexScreenerService.getTokenPair(token).timeout(const Duration(seconds: 5));
-          token.price = pair.priceUsd ?? 0.00;
-          final tokenFromBox = box.get(token.symbol);
-          if (tokenFromBox != null) {
+      final tokens = state.tokens;
+      final quotes = await dexScreenerService.getTokenQuotes(tokens.map((e) => e.id).toList()).timeout(const Duration(seconds: 5));
+      quotes?.forEach((String key, quote) async {
+        final tokenFromBox = box.get(tokens.where((token) => token.id == quote.id).first.symbol);
+        final token = tokens.firstWhere((token) => token.id == quote.id);
+        if (tokenFromBox != null) {
+          if( token != null ) {
             token.bagSize = tokenFromBox.bagSize;
             token.isVisible = tokenFromBox.isVisible;
+            token.price = quote.usd;
           }
-          await box.put(token.symbol, token);
-        } catch (err) {
-          // some sort of error toast
-        }
-      }).toList();
-      await Future.wait(fetchTokensData);
+        } 
+        await box.put(token.symbol, token);
+      });
+    } catch (err) {
+      print(err);
+      // some sort of error toast
+    }
+      
+    try {
       TokenAsset.sortByPrice(state.tokens);
       applySettings();
       emit(TokenAssetsState(state.tokens));

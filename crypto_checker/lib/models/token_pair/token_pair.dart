@@ -5,6 +5,31 @@ import 'quote_token.dart';
 import 'txns.dart';
 import 'volume.dart';
 
+class QuotesLatest {
+  int id;
+  String name;
+  String symbol;
+  double usd;
+
+  QuotesLatest({
+    required this.id,
+    required this.name,
+    required this.symbol,
+    required this.usd
+  });
+
+  factory QuotesLatest.fromJson(Map<String, dynamic> json) => QuotesLatest(
+    id: json['id'],
+    name: json['name'],
+    symbol: json['symbol'],
+    usd: json['quote']['USD']['price']
+  );
+
+  @override
+  String toString() => 'Quotes \n$id - $name - $symbol - $usd';
+
+}
+
 class TokenPair {
   String? chainId;
   String? dexId;

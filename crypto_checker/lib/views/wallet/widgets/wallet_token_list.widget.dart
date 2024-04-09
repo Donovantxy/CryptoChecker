@@ -52,12 +52,12 @@ class _WalletTokenListWidgetState extends State<WalletTokenListWidget> {
                 elevation: 2.0,
                 clipBehavior: Clip.antiAlias,
                 child: Slidable(
-                  key: ValueKey(visibleTokens[index].pairAddress),
+                  key: ValueKey(visibleTokens[index].id),
                   startActionPane: _startActionPane(visibleTokens[index].symbol),
                   child: InkWell(
                     splashColor: const Color.fromARGB(255, 5, 95, 120),
                     child: WalletTokenListItem(
-                      key: ValueKey(visibleTokens[index].pairAddress),
+                      key: ValueKey(visibleTokens[index].id),
                       tokenAsset: visibleTokens[index],
                     ),
                   ),
@@ -68,7 +68,7 @@ class _WalletTokenListWidgetState extends State<WalletTokenListWidget> {
 
   void _startPollingData(BuildContext ctx) {
     BlocProvider.of<TokenAssetsBloc>(ctx).add(FetchTokenDataEvent());
-    _timer = Timer.periodic(const Duration(minutes: 1), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (_) {
       if (mounted) {
         BlocProvider.of<TokenAssetsBloc>(ctx).add(FetchTokenDataEvent());
       }

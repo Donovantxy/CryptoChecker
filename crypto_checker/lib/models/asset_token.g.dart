@@ -17,24 +17,27 @@ class TokenAssetAdapter extends TypeAdapter<TokenAsset> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TokenAsset(
-      symbol: fields[0] as String,
-      bagSize: fields[1] as double,
-      price: fields[2] as double,
-      isVisible: fields[3] as bool,
+      id: fields[0] as int,
+      symbol: fields[1] as String,
+      bagSize: fields[2] as double,
+      price: fields[3] as double,
+      isVisible: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, TokenAsset obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.symbol)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.bagSize)
+      ..write(obj.symbol)
       ..writeByte(2)
-      ..write(obj.price)
+      ..write(obj.bagSize)
       ..writeByte(3)
+      ..write(obj.price)
+      ..writeByte(4)
       ..write(obj.isVisible);
   }
 
