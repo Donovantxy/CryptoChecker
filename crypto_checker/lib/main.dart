@@ -39,7 +39,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TokenAssetsBloc assetBloc = TokenAssetsBloc(dexScreenerService: const DexScreenerService());
+    TokenAssetsBloc assetBloc = TokenAssetsBloc(marketCoinCapService: const MarketCoinCapService());
     assetBloc.add(InitTokenAssetsEvent());
     return BlocProvider(
         create: (context) => assetBloc,

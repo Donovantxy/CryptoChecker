@@ -16,6 +16,7 @@ class TokenAsset extends HiveObject {
   double price;
   @HiveField(4)
   bool isVisible;
+  double percentage;
 
   TokenAsset({
     required this.id,
@@ -24,6 +25,7 @@ class TokenAsset extends HiveObject {
     this.bagSize = 0,
     this.price = 0.00,
     this.isVisible = true,
+    this.percentage = 0.00
   });
 
   TokenAsset copyWith({
@@ -41,6 +43,7 @@ class TokenAsset extends HiveObject {
       bagSize: bagSize ?? this.bagSize,
       price: price ?? this.price,
       isVisible: isVisible ?? this.isVisible,
+      percentage: 0.00
     );
   }
 
@@ -53,6 +56,15 @@ class TokenAsset extends HiveObject {
       return isAsc == SortingOrder.asc
           ? a.price.compareTo(b.price)
           : b.price.compareTo(a.price);
+    });
+  }
+  
+  static sortByPerc(List<TokenAsset> tokens,
+      {SortingOrder isAsc = SortingOrder.desc}) {
+    tokens.sort((TokenAsset a, TokenAsset b) {
+      return isAsc == SortingOrder.asc
+          ? a.percentage.compareTo(b.percentage)
+          : b.percentage.compareTo(a.percentage);
     });
   }
 

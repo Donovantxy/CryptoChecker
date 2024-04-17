@@ -10,23 +10,26 @@ class QuotesLatest {
   String name;
   String symbol;
   double usd;
+  double percDay;
 
   QuotesLatest({
     required this.id,
     required this.name,
     required this.symbol,
-    required this.usd
+    required this.usd,
+    required this.percDay
   });
 
   factory QuotesLatest.fromJson(Map<String, dynamic> json) => QuotesLatest(
     id: json['id'],
     name: json['name'],
     symbol: json['symbol'],
-    usd: json['quote']['USD']['price']
+    usd: json['quote']['USD']['price'],
+    percDay: json['quote']['USD']['percent_change_24h']
   );
 
   @override
-  String toString() => 'Quotes \n$id - $name - $symbol - $usd';
+  String toString() => 'Quotes \n$id - $name - $symbol - $usd - $percDay';
 
 }
 

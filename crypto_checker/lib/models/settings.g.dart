@@ -56,6 +56,8 @@ class OrderByAdapter extends TypeAdapter<OrderBy> {
         return OrderBy.bagSize;
       case 2:
         return OrderBy.symbol;
+      case 3:
+        return OrderBy.perc;
       default:
         return OrderBy.price;
     }
@@ -72,6 +74,9 @@ class OrderByAdapter extends TypeAdapter<OrderBy> {
         break;
       case OrderBy.symbol:
         writer.writeByte(2);
+        break;
+      case OrderBy.perc:
+        writer.writeByte(3);
         break;
     }
   }

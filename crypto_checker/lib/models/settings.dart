@@ -9,7 +9,9 @@ enum OrderBy {
   @HiveField(1)
   bagSize,
   @HiveField(2)
-  symbol
+  symbol,
+  @HiveField(3)
+  perc
 }
 
 @HiveType(typeId: 4)
@@ -30,6 +32,7 @@ class Settings extends HiveObject {
     OrderBy.price: 'Price',
     OrderBy.bagSize: 'Bag',
     OrderBy.symbol: 'Name',
+    OrderBy.perc: 'Perc',
   };
 
   Settings({this.orderBy = OrderBy.price, this.sortingOrder = SortingOrder.desc});

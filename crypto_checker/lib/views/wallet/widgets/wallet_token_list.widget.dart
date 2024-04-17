@@ -68,7 +68,7 @@ class _WalletTokenListWidgetState extends State<WalletTokenListWidget> {
 
   void _startPollingData(BuildContext ctx) {
     BlocProvider.of<TokenAssetsBloc>(ctx).add(FetchTokenDataEvent());
-    _timer = Timer.periodic(const Duration(seconds: 10), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 6), (_) {
       if (mounted) {
         BlocProvider.of<TokenAssetsBloc>(ctx).add(FetchTokenDataEvent());
       }
