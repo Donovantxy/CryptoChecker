@@ -1,0 +1,35 @@
+<mat-card [ngClass]="token.percentage > 0 ? 'up' : 'down'">
+  <div class="icon">
+    <img [src]="token.icon">
+  </div>
+  <div class="info">
+    <ul>
+      <li class="info__symbol">{{token.symbol}}</li>
+      <li class="info__price">
+        <span>price</span>
+        <span>{{token.price | formatPrice}}</span>
+      </li>
+      <li class="info__bag">
+        <span>bag</span> 
+        @if ( isBagSizeInputVisible ) {
+          <input matInput type="text" [(ngModel)]="bagSize" appInputBagSize (newValue)="dispatchNewBagSize($event)">
+          <i class="fas fa-times-circle" (click)="showBagSizeField()"></i>
+        } @else {
+          <span>{{token.bagSize | number:'1.0' }}</span>
+          <i class="fas fa-pen" (click)="showBagSizeField()"></i>
+        }
+      </li>
+      <li class="info__total">
+        <span>total</span>
+        <span>{{!!token.price && !!token.bagSize ? ((token.price * token.bagSize) | currency:'$':'symbol':'1.2') : '$0.00'}}</span>
+      </li>
+    </ul>
+  </div>
+  <div class="indicators">
+    <i class="fas" [ngClass]="token.percentage >= 0 ? 'fa-angle-double-up' : 'fa-angle-double-down'"></i>
+    <span>{{token.percentage | number: '1.2-2'}}%</span>
+  </div>
+  <div class="actions">
+    <i class="fas fa-trash"></i>
+  </div>
+</mat-card>

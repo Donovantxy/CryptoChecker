@@ -1,0 +1,49 @@
+@import "../../styles/colors";
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+:host {
+  height: $appBarHeight;
+  background-color: $main-theme;
+  color: $white;
+  .fas {
+    color: $white;
+  }
+  @include display-flex($align: center);
+  .burger-menu,
+  .title,
+  .total-capital,
+  .sorting,
+  .burger-menu {
+    height: 100%;
+    @include display-flex($align: center, $justify: center);
+  }
+  .burger-menu {
+    width: 50px;
+  }
+  .title {
+    justify-content: flex-start;
+    flex: 1 0 auto;
+    font-size: $fontSizeL;
+    font-weight: bold;
+  }
+  .sorting .sorting__by,
+  .capital {
+    padding: 0 10px;
+    font-size: $fontSizeXS;
+  }
+  .capital {
+    justify-content: flex-end;
+  }
+  .sorting {
+    width: 125px;
+    justify-content: flex-start;
+    &__by {
+      display: flex;
+      align-items: center;
+      height: 40%;
+      border-left: 1px solid $white;
+      font-weight: bold;
+    }
+  }
+}

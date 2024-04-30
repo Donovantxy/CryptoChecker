@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_state.dart';
@@ -11,7 +13,8 @@ import 'package:intl/intl.dart';
 class CcCustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool showActions;
-  const CcCustomAppBar({required this.title, this.showActions = true, super.key});
+  const CcCustomAppBar(
+      {required this.title, this.showActions = true, super.key});
 
   @override
   State<CcCustomAppBar> createState() => _CcCustomAppBarState();
@@ -38,16 +41,22 @@ class _CcCustomAppBarState extends State<CcCustomAppBar> {
       foregroundColor: Colors.white,
       title: Text(widget.title),
       actions: [
-        BlocBuilder<TokenAssetsBloc, TokenAssetsBaseState>(builder: (ctx, state) {
-          final worth = state.tokens.map((token) => token.price * token.bagSize).fold(0.0, (value, element) => value + element);
-          settings = Hive.box<Settings>(HIVE_SETTINGS).get(HIVE_SETTINGS) ?? Settings();
+        BlocBuilder<TokenAssetsBloc, TokenAssetsBaseState>(
+            builder: (ctx, state) {
+          final worth = state.tokens
+              .map((token) => token.price * token.bagSize)
+              .fold(0.0, (value, element) => value + element);
+          settings = Hive.box<Settings>(HIVE_SETTINGS).get(HIVE_SETTINGS) ??
+              Settings();
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 0),
-                  child: Text(NumberFormat.simpleCurrency(locale: 'en_US', decimalDigits: 2).format(worth)),
+                  child: Text(NumberFormat.simpleCurrency(
+                          locale: 'en_US', decimalDigits: 2)
+                      .format(worth)),
                 ),
               ),
               const SizedBox(width: 10),
@@ -62,12 +71,15 @@ class _CcCustomAppBarState extends State<CcCustomAppBar> {
                 DropdownButtonHideUnderline(
                   child: DropdownButton<OrderBy>(
                       dropdownColor: Theme.of(context).colorScheme.primary,
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                       elevation: 2,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                       iconEnabledColor: Colors.white,
                       value: settings.orderBy,
-                      items: settings.orderByLabel.entries.toList().map((MapEntry<OrderBy, String> entry) {
+                      items: settings.orderByLabel.entries
+                          .toList()
+                          .map((MapEntry<OrderBy, String> entry) {
                         return DropdownMenuItem<OrderBy>(
                           value: entry.key,
                           child: Text(entry.value),
@@ -80,7 +92,10 @@ class _CcCustomAppBarState extends State<CcCustomAppBar> {
               if (widget.showActions)
                 IconButton(
                   onPressed: () => bloc.add(UpdateSortingOrderTokensEvent()),
-                  icon: Icon(settings.sortingOrder == SortingOrder.asc ? Icons.arrow_circle_up : Icons.arrow_circle_down),
+                  icon: Transform.rotate(
+                    angle: settings.sortingOrder == SortingOrder.asc ? pi : 0,
+                    child: const Icon(Icons.sort),
+                  ),
                 ),
             ],
           );

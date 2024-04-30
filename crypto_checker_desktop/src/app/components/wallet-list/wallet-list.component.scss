@@ -1,0 +1,19 @@
+@import '../../styles/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  height: $viewPort - $appBarHeight;
+  overflow-y: auto;
+  app-token-list-item {
+    margin: 10px 0;
+    &:nth-child(1) {
+      margin-top: 0px;
+    }
+    &:nth-last-child(1) {
+      margin-bottom: 0px;
+    }
+  }
+}

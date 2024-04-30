@@ -1,0 +1,5 @@
+<ng-container *ngIf="(tokensSelector | async) as tokens">
+  @for (token of tokens; track $index) {
+    <app-token-list-item [token]="token"></app-token-list-item>
+  }
+</ng-container>
