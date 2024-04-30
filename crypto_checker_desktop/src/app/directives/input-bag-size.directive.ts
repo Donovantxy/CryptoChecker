@@ -34,7 +34,7 @@ export class InputBagSizeDirective implements OnInit {
     .pipe(takeUntilDestroyed(this._destroyRef))
     .subscribe(ev => {
       if ( ev.key === 'Enter' ) {
-        this.newValue.emit(Number(this._elementRef.nativeElement.value.replace(',', '')));
+        this.newValue.emit(Number(this._elementRef.nativeElement.value.replace(/,/g, '')));
       }
     });
   }

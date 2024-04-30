@@ -66,11 +66,7 @@ interface QuotesLatest {
   providedIn: 'root',
 })
 export class CoinMarketCapService {
-  private readonly COIN_MARKET_CAP_API_KEY =
-    'c40d9fb0-bb51-4ec9-80dd-eec70b3a9a71';
-  // private readonly COIN_MARKET_CAP_API_KEY = '2a8ba619-ae39-4be3-81f0-e9b34b1e9998'; // Francesco Masciari
-  // private readonly COIN_MARKET_CAP_API_KEY = 'b96be1dc-e309-419b-83fb-ffc763281d73'; // Gianluca
-  // private readonly COIN_MARKET_CAP_API_KEY = '22a0021b-1fea-474e-8df3-640f951697a0'; // Pino
+  private readonly COIN_MARKET_CAP_API_KEY ='****';
 
   constructor(private _httpClient: HttpClient) {}
 
