@@ -7,6 +7,6 @@ class TokenListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CcScaffoldWidget(appBarTitle: 'Available tokens', body: TokenListWidget());
+    return const CcScaffoldWidget(appBarTitle: 'Tokens list', body: TokenListWidget());
   }
 }

@@ -4,24 +4,23 @@ import 'package:crypto_checker/models/settings.dart';
 import 'package:crypto_checker/models/token_pair/token_pair.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class CoinMarketCapService {
   final String quoteToken = 'USDT';
-  String _COIN_MARKET_CAP_API_KEY = '';
+  static String COIN_MARKET_CAP_API_KEY = '';
 
   CoinMarketCapService() {
-    _COIN_MARKET_CAP_API_KEY = Hive.box<Settings>(HIVE_SETTINGS).get(HIVE_SETTINGS)?.coinMarketCapApiKey ?? Settings().coinMarketCapApiKey;
-  }
-
-  setKey(String key, ) {
-    _COIN_MARKET_CAP_API_KEY = key;
+    CoinMarketCapService.COIN_MARKET_CAP_API_KEY = Hive.box<Settings>(HIVE_SETTINGS).get(HIVE_SETTINGS)?.coinMarketCapApiKey ?? Settings().coinMarketCapApiKey;
+    print('_COIN_MARKET_CAP_API_KEY - ${CoinMarketCapService.COIN_MARKET_CAP_API_KEY}');
   }
 
   Future<Map<String, QuotesLatest>?> getTokenQuotes(List<int> ids) async {
+    print('X-CMC_PRO_API_KEY - ${CoinMarketCapService.COIN_MARKET_CAP_API_KEY}');
     final response = await http.get(
       Uri.parse('https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=${ids.join(',')}'),
       headers: {
-        'X-CMC_PRO_API_KEY': _COIN_MARKET_CAP_API_KEY,
+        'X-CMC_PRO_API_KEY': CoinMarketCapService.COIN_MARKET_CAP_API_KEY,
         "Accept": "application/json",
       },
     );
@@ -45,4 +44,16 @@ class CoinMarketCapService {
     }
     throw Exception('Failed to fetch data -> getTokenQuotes');
   }
+
+  static String floatDigits(double price) {
+    int decimal = 2;
+    int nZeros = 0;
+    double priceUnderOne = price;
+    while (price > 0 && priceUnderOne < 1) {
+      priceUnderOne *= 10;
+      nZeros++;
+    }
+    return NumberFormat.simpleCurrency(locale: 'en_US', decimalDigits: decimal + nZeros).format(price);
+  }
+
 }

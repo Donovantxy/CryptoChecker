@@ -94,6 +94,7 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
   Future<void> _onFetchTokenDataEvent(FetchTokenDataEvent ev, Emitter<TokenAssetsBaseState> emit) async {
     try {
       final tokens = state.tokens;
+      print('_onFetchTokenDataEvent - ${CoinMarketCapService.COIN_MARKET_CAP_API_KEY}');
       final quotes = await coinMarketCapApi.getTokenQuotes(tokens.map((e) => e.id).toList()).timeout(const Duration(seconds: 5));
       quotes?.forEach((String key, quote) async {
         final tokenFromBox = box.get(tokens.where((token) => token.id == quote.id).first.symbol);

@@ -17,7 +17,6 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   late final TextEditingController _apiKeyController;
-  final coinMarketCapApi = CoinMarketCapService();
   Widget? _resetField;
 
   Widget getResetFieldIcon(String value) {
@@ -68,10 +67,11 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    coinMarketCapApi.setKey(_apiKeyController.text);
+                    context.read<TokenAssetsBloc>().add(UpdateApiKeyEvent(_apiKeyController.text));
                     try {
+                      final coinMarketCapApi = CoinMarketCapService();
+                      CoinMarketCapService.COIN_MARKET_CAP_API_KEY = _apiKeyController.text;
                       await coinMarketCapApi.getTokenQuotes([1]);
-                      context.read<TokenAssetsBloc>().add(UpdateApiKeyEvent(_apiKeyController.text));
                       Navigator.of(context).pushReplacementNamed(AppRoutes.walletView);
                     } catch(err) {
                       print('setKey - $err');

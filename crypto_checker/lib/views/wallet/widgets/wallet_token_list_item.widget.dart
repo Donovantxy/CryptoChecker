@@ -4,6 +4,7 @@ import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/models/token_pair/token_pair.dart';
+import 'package:crypto_checker/services/dexscreener/dexscreener.service.dart';
 import 'package:crypto_checker/views/wallet/widgets/bag_setting_dialog.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -51,7 +52,7 @@ class _WalletTokenListItemState extends State<WalletTokenListItem>
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 2),
               child: Text(
-                  'price: ${widget.tokenAsset.price == 0 ? '---' : '${_floatDigits(widget.tokenAsset.price)}'}'),
+                  'price: ${widget.tokenAsset.price == 0 ? '---' : CoinMarketCapService.floatDigits(widget.tokenAsset.price)}'),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 2),
@@ -157,20 +158,7 @@ class _WalletTokenListItemState extends State<WalletTokenListItem>
 
   String _getAsset(TokenAsset token) {
     double capital = (token.bagSize * token.price);
-    return _floatDigits(capital);
-  }
-
-  String _floatDigits(double price) {
-    int decimal = 2;
-    int nZeros = 0;
-    double priceUnderOne = price;
-    while (price > 0 && priceUnderOne < 1) {
-      priceUnderOne *= 10;
-      nZeros++;
-    }
-    return NumberFormat.simpleCurrency(
-            locale: 'en_US', decimalDigits: decimal + nZeros)
-        .format(price);
+    return CoinMarketCapService.floatDigits(capital);
   }
 
   BagSettingDialogWidget _showBagSettingDialog(

@@ -2,6 +2,7 @@ import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_state.dart';
 import 'package:crypto_checker/models/asset_token.dart';
+import 'package:crypto_checker/services/dexscreener/dexscreener.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -60,7 +61,7 @@ class TokenListWidget extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: Text('price: ${state.tokens[index].price == 0 ? '---' : '\$${state.tokens[index].price}'}'),
+                          child: Text('price: ${state.tokens[index].price == 0 ? '---' : CoinMarketCapService.floatDigits(state.tokens[index].price)}'),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 2),
