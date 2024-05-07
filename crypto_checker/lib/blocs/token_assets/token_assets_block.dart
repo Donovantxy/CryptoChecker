@@ -9,12 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
-  final MarketCoinCapService marketCoinCapService ;
+  final CoinMarketCapService coinMarketCapApi;
   final box = Hive.box<TokenAsset>(HIVE_TOKENASSET_BOX_NAME);
   final settingsBox = Hive.box<Settings>(HIVE_SETTINGS);
   late Settings settings;
 
-  TokenAssetsBloc({required this.marketCoinCapService}) : super(TokenAssetsState([])) {
+  TokenAssetsBloc({required this.coinMarketCapApi}) : super(TokenAssetsState([])) {
     settings = settingsBox.get(HIVE_SETTINGS) ?? Settings();
     settingsBox.put(HIVE_SETTINGS, settings);
     on<InitTokenAssetsEvent>(_onInitTokenAssetsEvent);
@@ -23,6 +23,7 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
     on<FetchTokenDataEvent>(_onFetchTokenDataEvent);
     on<UpdateTokenBagSizeEvent>(_onUpdateTokenBagSizeEvent);
     on<ToggleTokenVisibilityEvent>(_onToggleTokenVisibilityEvent);
+    on<UpdateApiKeyEvent>(_onUpdateApiKeyEvent);
   }
 
   Future<void> applySettings() async {
@@ -36,8 +37,17 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
       case OrderBy.symbol:
         TokenAsset.sortBySymbol(state.tokens, isAsc: settings.sortingOrder);
         break;
-      case OrderBy.perc:
-        TokenAsset.sortByPerc(state.tokens, isAsc: settings.sortingOrder);
+      case OrderBy.percD:
+        TokenAsset.sortByPerc(state.tokens, Percentages.daily, isAsc: settings.sortingOrder);
+        break;
+      case OrderBy.percW:
+        TokenAsset.sortByPerc(state.tokens, Percentages.weekly, isAsc: settings.sortingOrder);
+        break;
+      case OrderBy.percM:
+        TokenAsset.sortByPerc(state.tokens, Percentages.monthly, isAsc: settings.sortingOrder);
+        break;
+      case OrderBy.capital:
+        TokenAsset.sortByCapital(state.tokens, isAsc: settings.sortingOrder);
         break;
       default:
         throw Exception('Error - applySettings() > switch');
@@ -74,11 +84,17 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
     await applySettings();
     emit(TokenAssetsState(state.tokens));
   }
+  
+  Future<void> _onUpdateApiKeyEvent(UpdateApiKeyEvent ev, Emitter<TokenAssetsBaseState> emit) async {
+    settings.coinMarketCapApiKey = ev.apiKey;
+    await settings.save();
+    emit(TokenAssetsState(state.tokens));
+  }
 
   Future<void> _onFetchTokenDataEvent(FetchTokenDataEvent ev, Emitter<TokenAssetsBaseState> emit) async {
     try {
       final tokens = state.tokens;
-      final quotes = await marketCoinCapService.getTokenQuotes(tokens.map((e) => e.id).toList()).timeout(const Duration(seconds: 5));
+      final quotes = await coinMarketCapApi.getTokenQuotes(tokens.map((e) => e.id).toList()).timeout(const Duration(seconds: 5));
       quotes?.forEach((String key, quote) async {
         final tokenFromBox = box.get(tokens.where((token) => token.id == quote.id).first.symbol);
         final token = tokens.firstWhere((token) => token.id == quote.id);
@@ -87,14 +103,16 @@ class TokenAssetsBloc extends Bloc<TokenAssetsEvent, TokenAssetsBaseState> {
             token.bagSize = tokenFromBox.bagSize;
             token.isVisible = tokenFromBox.isVisible;
             token.price = quote.usd;
-            token.percentage = quote.percDay;
+            token.percentageD = quote.percDay;
+            token.percentageW = quote.percWeek;
+            token.percentageM = quote.percMonth;
           }
         } 
         await box.put(token.symbol, token);
       });
     } catch (err) {
-      print(err);
-      // some sort of error toast
+      // print('_onFetchTokenDataEvent - $err');
+      emit(TokenFetchErrorState('onFetchError', state.tokens));
     }
       
     try {

@@ -6,6 +6,7 @@ import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/models/token_pair/token_pair.dart';
 import 'package:crypto_checker/views/wallet/widgets/bag_setting_dialog.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -68,10 +69,11 @@ class _WalletTokenListItemState extends State<WalletTokenListItem>
         ),
       ),
       trailing: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [..._getTrailing()],
+        padding: const EdgeInsets.all(0.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [..._getTrailingPercs()],
         ),
       ),
       onTap: () {
@@ -86,23 +88,58 @@ class _WalletTokenListItemState extends State<WalletTokenListItem>
     );
   }
 
-  List<Widget> _getTrailing() {
-    final int sign = widget.tokenAsset.percentage > 0 ? 1 : -1;
+  // List<Widget> _getTrailing() {
+  //   final int sign = widget.tokenAsset.percentage > 0 ? 1 : -1;
+  //   return [
+  //     Transform.rotate(
+  //       angle: sign * (-pi / 2),
+  //       child: Icon(
+  //         size: 32,
+  //         Icons.double_arrow,
+  //         color: sign > 0 ? Colors.green : Colors.red[800],
+  //       ),
+  //     ),
+  //     const SizedBox(width: 6),
+  //     SizedBox(
+  //       width: 65,
+  //       child: Text(
+  //         textAlign: TextAlign.start,
+  //         '${widget.tokenAsset.percentage.toStringAsFixed((2))}%',
+  //         style: const TextStyle(fontSize: 14),
+  //       ),
+  //     ),
+  //   ];
+  // }
+  
+  List<Widget> _getTrailingPercs() {
+    final String signD = widget.tokenAsset.percentageD > 0 ? '+' : '';
+    final String signW = widget.tokenAsset.percentageW > 0 ? '+' : '';
+    final String signM = widget.tokenAsset.percentageM > 0 ? '+' : '';
+    const double width = 100;
+    const double fontSize = 12.5;
     return [
-      Transform.rotate(
-        angle: sign * (-pi / 2),
-        child: Icon(
-          size: 32,
-          Icons.double_arrow,
-          color: sign > 0 ? Colors.green : Colors.red[800],
+      SizedBox(
+        width: width,
+        child: Text(
+          textAlign: TextAlign.start,
+          'D $signD${widget.tokenAsset.percentageD.toStringAsFixed((2))}%',
+          style: TextStyle(fontSize: fontSize, color: signD == '+' ? Colors.green : Colors.red[800]),
         ),
       ),
       SizedBox(
-        width: 50,
+        width: width,
         child: Text(
-          textAlign: TextAlign.end,
-          '${widget.tokenAsset.percentage.toStringAsFixed((2))}%',
-          style: const TextStyle(fontSize: 14),
+          textAlign: TextAlign.start,
+          'W $signW${widget.tokenAsset.percentageW.toStringAsFixed((2))}%',
+          style: TextStyle(fontSize: fontSize, color: signW == '+' ? Colors.green : Colors.red[800] ),
+        ),
+      ),
+      SizedBox(
+        width: width,
+        child: Text(
+          textAlign: TextAlign.start,
+          'M $signM${widget.tokenAsset.percentageM.toStringAsFixed((2))}%',
+          style: TextStyle(fontSize: fontSize, color: signM == '+' ? Colors.green : Colors.red[800]),
         ),
       ),
     ];

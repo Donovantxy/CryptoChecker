@@ -19,17 +19,19 @@ class SettingsAdapter extends TypeAdapter<Settings> {
     return Settings(
       orderBy: fields[0] as OrderBy,
       sortingOrder: fields[1] as SortingOrder,
-    );
+    )..coinMarketCapApiKey = fields[2] == null ? '' : fields[2] as String;
   }
 
   @override
   void write(BinaryWriter writer, Settings obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.orderBy)
       ..writeByte(1)
-      ..write(obj.sortingOrder);
+      ..write(obj.sortingOrder)
+      ..writeByte(2)
+      ..write(obj.coinMarketCapApiKey);
   }
 
   @override
@@ -57,7 +59,13 @@ class OrderByAdapter extends TypeAdapter<OrderBy> {
       case 2:
         return OrderBy.symbol;
       case 3:
-        return OrderBy.perc;
+        return OrderBy.percD;
+      case 4:
+        return OrderBy.percW;
+      case 5:
+        return OrderBy.percM;
+      case 6:
+        return OrderBy.capital;
       default:
         return OrderBy.price;
     }
@@ -75,8 +83,17 @@ class OrderByAdapter extends TypeAdapter<OrderBy> {
       case OrderBy.symbol:
         writer.writeByte(2);
         break;
-      case OrderBy.perc:
+      case OrderBy.percD:
         writer.writeByte(3);
+        break;
+      case OrderBy.percW:
+        writer.writeByte(4);
+        break;
+      case OrderBy.percM:
+        writer.writeByte(5);
+        break;
+      case OrderBy.capital:
+        writer.writeByte(6);
         break;
     }
   }

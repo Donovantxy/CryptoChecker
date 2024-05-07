@@ -1,9 +1,26 @@
 <div class="burger-menu">
-  <i class="fas fa-bars"></i>
+  <i class="fas fa-bars" (click)="menuClicked.emit()"></i>
 </div>
-<div class="title">Wallet</div>
-<div class="capital">{{(capitalSelector | async) | currency:'$'}}</div>
+<div class="title" *ngIf="title">{{title}}</div>
+<div class="capital">{{(capitalSelector$ | async) | currency:'$'}}</div>
 <div class="sorting">
-  <div class="sorting__by">Perc</div>
-  <div class="sorting__asc-desc"></div>
+  <div class="sorting__by">
+    <mat-form-field>
+      <mat-select 
+        disableRipple
+        [(value)]="currentSortBy"
+        [panelWidth]="85"
+        [panelClass]="'select-sort-by'" 
+        (selectionChange)="sortByChanged($event)" 
+      >
+        <mat-option [value]="sortByOptions.PRICE">Price</mat-option>
+        <mat-option [value]="sortByOptions.BAG">Bag</mat-option>
+        <mat-option [value]="sortByOptions.NAME">Name</mat-option>
+        <mat-option [value]="sortByOptions.PERC">Perc</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="sorting__asc-desc">
+    <i class="fas" (click)="sortingChanged()" [ngClass]="currentSorting == currentSortingOptions.ASC ? 'fa-sort-amount-down-alt' : 'fa-sort-amount-down'"></i>
+  </div>
 </div>

@@ -25,11 +25,17 @@
       </li>
     </ul>
   </div>
-  <div class="indicators">
-    <i class="fas" [ngClass]="token.percentage >= 0 ? 'fa-angle-double-up' : 'fa-angle-double-down'"></i>
-    <span>{{token.percentage | number: '1.2-2'}}%</span>
-  </div>
-  <div class="actions">
-    <i class="fas fa-trash"></i>
-  </div>
+  @if (isWallet) {
+    <div class="indicators">
+      <i class="fas" [ngClass]="token.percentage >= 0 ? 'fa-angle-double-up' : 'fa-angle-double-down'"></i>
+      <span>{{token.percentage | number: '1.2-2'}}%</span>
+    </div>
+    <div class="actions">
+      <i class="fas fa-eye-slash" (click)="visibilityChanged(token.id)"></i>
+    </div>
+  } @else {
+    <div class="settings">
+      <mat-slide-toggle [checked]="token.isVisible" (toggleChange)="visibilityChanged(token.id)"></mat-slide-toggle>
+    </div>
+  }
 </mat-card>

@@ -5,8 +5,8 @@ const fs = require("node:fs");
 let mainWindow;
 
 function createWindow() {
-  // const width = 450;
-  const width = 950;
+  // const width = 950;
+  const width = 450;
   const height = 850;
   mainWindow = new BrowserWindow({
     width,

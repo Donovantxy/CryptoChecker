@@ -3,6 +3,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 part 'asset_token.g.dart';
 
+enum Percentages { daily, weekly, monthly }
+
 @HiveType(typeId: 0)
 class TokenAsset extends HiveObject {
   @HiveField(0)
@@ -16,7 +18,9 @@ class TokenAsset extends HiveObject {
   double price;
   @HiveField(4)
   bool isVisible;
-  double percentage;
+  double percentageD;
+  double percentageW;
+  double percentageM;
 
   TokenAsset({
     required this.id,
@@ -25,7 +29,9 @@ class TokenAsset extends HiveObject {
     this.bagSize = 0,
     this.price = 0.00,
     this.isVisible = true,
-    this.percentage = 0.00
+    this.percentageD = 0.00,
+    this.percentageW = 0.00,
+    this.percentageM = 0.00
   });
 
   TokenAsset copyWith({
@@ -43,7 +49,9 @@ class TokenAsset extends HiveObject {
       bagSize: bagSize ?? this.bagSize,
       price: price ?? this.price,
       isVisible: isVisible ?? this.isVisible,
-      percentage: 0.00
+      percentageD: 0.00,
+      percentageW: 0.00,
+      percentageM: 0.00
     );
   }
 
@@ -59,12 +67,25 @@ class TokenAsset extends HiveObject {
     });
   }
   
-  static sortByPerc(List<TokenAsset> tokens,
+  static sortByPerc(
+      List<TokenAsset> tokens,
+      Percentages whichPerc,
       {SortingOrder isAsc = SortingOrder.desc}) {
     tokens.sort((TokenAsset a, TokenAsset b) {
-      return isAsc == SortingOrder.asc
-          ? a.percentage.compareTo(b.percentage)
-          : b.percentage.compareTo(a.percentage);
+      switch (whichPerc) {
+        case Percentages.daily:
+          return isAsc == SortingOrder.asc
+              ? a.percentageD.compareTo(b.percentageD)
+              : b.percentageD.compareTo(a.percentageD);
+        case Percentages.weekly:
+          return isAsc == SortingOrder.asc
+              ? a.percentageW.compareTo(b.percentageW)
+              : b.percentageW.compareTo(a.percentageW);
+        case Percentages. monthly:
+          return isAsc == SortingOrder.asc
+              ? a.percentageM.compareTo(b.percentageM)
+              : b.percentageM.compareTo(a.percentageM);
+      }
     });
   }
 
@@ -80,6 +101,13 @@ class TokenAsset extends HiveObject {
     tokens.sort((TokenAsset a, TokenAsset b) => isAsc == SortingOrder.asc
         ? a.bagSize.compareTo(b.bagSize)
         : b.bagSize.compareTo(a.bagSize));
+  }
+  
+  static sortByCapital(List<TokenAsset> tokens,
+      {SortingOrder isAsc = SortingOrder.desc}) {
+    tokens.sort((TokenAsset a, TokenAsset b) => isAsc == SortingOrder.asc
+        ? (a.bagSize * a.price).compareTo(b.bagSize * b.price)
+        : (b.bagSize * b.price).compareTo(a.bagSize * a.price));
   }
 }
 

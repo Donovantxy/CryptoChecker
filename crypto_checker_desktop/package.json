@@ -10,10 +10,15 @@
     "test": "ng test",
     "electron": "electron .",
     "electron-build": "ng build --base-href ./ && electron .",
-    "electron-dev": "concurrently \"npm run watch\" \"wait-on dist/crypto-checker-desktop/browser/index.html && electron .\""
+    "electron-dev": "concurrently \"npm run watch\" \"wait-on dist/crypto-checker-desktop/browser/index.html && electron .\"",
+    "macOsAppArm": "electron-packager . CryptoChecker --platform=darwin --arm64 --asar --icon=./dist/crypto-checker-desktop/browser/assets/images/crypto_checker.icns",
+    "macOsAppX64": "electron-packager . CryptoChecker --platform=darwin --prune=true --overwrite --arch=x64 --out=release-builds --asar --icon=./dist/crypto-checker-desktop/browser/assets/images/crypto_checker.icns"
   },
   "private": true,
   "dependencies": {
+    
+  },
+  "devDependencies": {
     "@angular/animations": "^17.3.0",
     "@angular/common": "^17.3.0",
     "@angular/compiler": "^17.3.0",
@@ -28,9 +33,8 @@
     "electron-reload": "^2.0.0-alpha.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
-  },
-  "devDependencies": {
+    "zone.js": "~0.14.3",
+    
     "@angular-devkit/build-angular": "^17.3.5",
     "@angular/cli": "^17.3.5",
     "@angular/compiler-cli": "^17.3.0",
@@ -38,6 +42,7 @@
     "concurrently": "^8.2.2",
     "electron": "^30.0.1",
     "electron-builder": "^24.13.3",
+    "electron-installer-dmg": "^4.0.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

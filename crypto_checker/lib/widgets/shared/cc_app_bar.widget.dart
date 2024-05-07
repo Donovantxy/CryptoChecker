@@ -13,8 +13,7 @@ import 'package:intl/intl.dart';
 class CcCustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool showActions;
-  const CcCustomAppBar(
-      {required this.title, this.showActions = true, super.key});
+  const CcCustomAppBar({required this.title, this.showActions = true, super.key});
 
   @override
   State<CcCustomAppBar> createState() => _CcCustomAppBarState();
@@ -46,8 +45,7 @@ class _CcCustomAppBarState extends State<CcCustomAppBar> {
           final worth = state.tokens
               .map((token) => token.price * token.bagSize)
               .fold(0.0, (value, element) => value + element);
-          settings = Hive.box<Settings>(HIVE_SETTINGS).get(HIVE_SETTINGS) ??
-              Settings();
+          settings = Hive.box<Settings>(HIVE_SETTINGS).get(HIVE_SETTINGS) ?? Settings();
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [

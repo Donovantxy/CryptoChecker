@@ -1,5 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'variables';
+@import 'colors';
+
+html .mat-mdc-slide-toggle.mat-accent {
+  $lighter: lighten($main-theme, 5%);
+  $lighter2: lighten($main-theme, 15%);
+  --mdc-switch-selected-focus-state-layer-color: #{$main-theme};
+  --mdc-switch-selected-handle-color: #{$lighter};
+  --mdc-switch-selected-hover-state-layer-color: #{$main-theme};
+  --mdc-switch-selected-pressed-state-layer-color: #{$main-theme};
+  --mdc-switch-selected-focus-handle-color: #{$main-theme};
+  --mdc-switch-selected-hover-handle-color: #{$main-theme};
+  --mdc-switch-selected-pressed-handle-color: #{$main-theme};
+  --mdc-switch-selected-focus-track-color: #{$lighter2};
+  --mdc-switch-selected-hover-track-color: #{$lighter2};
+  --mdc-switch-selected-pressed-track-color: #{$lighter2};
+  --mdc-switch-selected-track-color: #{$lighter2};
+}
+
 body {
   margin: 0;
   display: flex;
@@ -18,4 +37,31 @@ ul, li {
 .fas {
   cursor: pointer;
   color: #025C71;
+}
+
+app-available-tokens,
+app-wallet-list {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin-top: 50px;
+  box-sizing: border-box;
+  height: $viewPort - $appBarHeight;
+  overflow-y: auto;
+  background-color: rgba($main-theme, .025);
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($black, .25);
+  }
+  app-token-list-item {
+    margin: 10px 0;
+    &:nth-child(1) {
+      margin-top: 0px;
+    }
+    &:nth-last-child(1) {
+      margin-bottom: 0px;
+    }
+  }
 }

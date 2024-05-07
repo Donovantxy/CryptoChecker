@@ -1,4 +1,4 @@
-import 'package:crypto_checker/views/settings_view/widgets/financial.widget.dart';
+import 'package:crypto_checker/views/financial_view/widgets/financial.widget.dart';
 import 'package:crypto_checker/widgets/shared/cc_scaffold.widget.dart';
 import 'package:flutter/material.dart';
 

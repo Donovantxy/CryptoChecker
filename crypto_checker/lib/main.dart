@@ -1,10 +1,12 @@
 import 'package:crypto_checker/blocs/token_assets/token_assets_block.dart';
 import 'package:crypto_checker/blocs/token_assets/token_assets_event.dart';
+import 'package:crypto_checker/blocs/token_assets/token_assets_state.dart';
 import 'package:crypto_checker/models/asset_token.dart';
 import 'package:crypto_checker/models/financial_record.dart';
 import 'package:crypto_checker/models/settings.dart';
 import 'package:crypto_checker/routes.dart';
 import 'package:crypto_checker/services/dexscreener/dexscreener.service.dart';
+import 'package:crypto_checker/widgets/shared/cc_scaffold.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -39,15 +41,16 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TokenAssetsBloc assetBloc = TokenAssetsBloc(marketCoinCapService: const MarketCoinCapService());
+    TokenAssetsBloc assetBloc = TokenAssetsBloc(coinMarketCapApi: CoinMarketCapService());
     assetBloc.add(InitTokenAssetsEvent());
     return BlocProvider(
-        create: (context) => assetBloc,
-        child: MaterialApp(
-          routes: AppRoutes.getRoutes(),
-          navigatorObservers: [ObserverUtils.routeObserver],
-          theme: ThemeData(colorScheme: const ColorScheme.light().copyWith(primary: const Color.fromARGB(255, 2, 97, 118))),
-        ));
+      create: (context) => assetBloc,
+      child: MaterialApp(
+            routes: AppRoutes.getRoutes(),
+            navigatorObservers: [ObserverUtils.routeObserver],
+            theme: ThemeData(colorScheme: const ColorScheme.light().copyWith(primary: const Color.fromARGB(255, 2, 97, 118))),
+      )
+    );
   }
 }
 

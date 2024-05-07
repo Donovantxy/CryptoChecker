@@ -93,7 +93,9 @@ class _CcDrawerWidgetState extends State<CcDrawerWidget> with RouteAware {
             _getDrawerItem(context, 'Token list', Icons.token, AppRoutes.tokenListView),
           Divider(color: Colors.grey.shade300),
           if ( currentRoute != AppRoutes.financialView )
-            _getDrawerItem(context, 'Financial', Icons.settings, AppRoutes.financialView)
+            _getDrawerItem(context, 'Financial', Icons.monetization_on, AppRoutes.financialView),
+          if ( currentRoute != AppRoutes.settingsView )
+            _getDrawerItem(context, 'Settings', Icons.settings, AppRoutes.settingsView)
         ],
       ),
     );

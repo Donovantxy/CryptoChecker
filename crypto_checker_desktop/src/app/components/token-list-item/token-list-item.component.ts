@@ -7,17 +7,19 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { InputBagSizeDirective } from '../../directives/input-bag-size.directive';
 import { Store } from '@ngxs/store';
-import { SetTokenBagSizeAction } from '../../store/crypto.actions';
+import { SetTokenBagSizeAction, ToggleTokenVisibilityAction } from '../../store/crypto.actions';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-token-list-item',
   standalone: true,
-  imports: [CommonModule, MatCard, FormatPricePipe, FormsModule, InputBagSizeDirective],
+  imports: [CommonModule, MatCard, FormatPricePipe, FormsModule, InputBagSizeDirective, MatSlideToggleModule],
   templateUrl: './token-list-item.component.html',
   styleUrl: './token-list-item.component.scss',
 })
 export class TokenListItemComponent implements OnInit {
   
+  @Input() isWallet = true;
   @Input({ required: true }) token!: Token;
   @ViewChild('bagSizeInput') input?: HTMLInputElement;
   bagSize: number = 0;
@@ -37,6 +39,10 @@ export class TokenListItemComponent implements OnInit {
   dispatchNewBagSize(newBagSize: number) {
     this._store.dispatch(new SetTokenBagSizeAction(this.token.id, newBagSize));
     this.isBagSizeInputVisible = false;
+  }
+
+  visibilityChanged(tokenId: number) {
+    this._store.dispatch(new ToggleTokenVisibilityAction(tokenId));
   }
 
 }

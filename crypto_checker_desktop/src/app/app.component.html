@@ -1,2 +1,10 @@
-<app-app-bar></app-app-bar>
+<app-app-bar 
+  [title]="viewTitle || ''"
+  (menuClicked)="toggleDrawer()"
+></app-app-bar>
+<app-drawer 
+  [ngClass]="{'show': isDrawerShown}"
+  [currentView]="currentPath || ''"
+  (drawerOverlayClicked)="toggleDrawer()"
+></app-drawer>
 <router-outlet></router-outlet>

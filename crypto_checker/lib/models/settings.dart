@@ -11,7 +11,13 @@ enum OrderBy {
   @HiveField(2)
   symbol,
   @HiveField(3)
-  perc
+  percD,
+  @HiveField(4)
+  percW,
+  @HiveField(5)
+  percM,
+  @HiveField(6)
+  capital
 }
 
 @HiveType(typeId: 4)
@@ -28,11 +34,16 @@ class Settings extends HiveObject {
   OrderBy orderBy;
   @HiveField(1)
   SortingOrder sortingOrder;
+  @HiveField(2, defaultValue: '')
+  String coinMarketCapApiKey = '';
   final Map<OrderBy, String> orderByLabel = {
     OrderBy.price: 'Price',
     OrderBy.bagSize: 'Bag',
     OrderBy.symbol: 'Name',
-    OrderBy.perc: 'Perc',
+    OrderBy.percD: 'PercD',
+    OrderBy.percW: 'PercW',
+    OrderBy.percM: 'PercM',
+    OrderBy.capital: 'Capital'
   };
 
   Settings({this.orderBy = OrderBy.price, this.sortingOrder = SortingOrder.desc});
