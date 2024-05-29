@@ -58,3 +58,7 @@ The app serves as a comprehensive tool for crypto asset management, offering vis
     <td></td>
   </tr>
 </table>
+
+**Build**
+
+flutter build apk --split-per-abi

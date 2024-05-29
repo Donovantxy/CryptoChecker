@@ -172,7 +172,7 @@ mixin TokenAssetList {
         icon: 'assets/images/token_icons/GALA.png',
       ),
       TokenAsset(
-        id: 11145,
+        id: 24735,
         symbol: 'PLS',
         icon: 'assets/images/token_icons/WPLS.svg',
       ),
