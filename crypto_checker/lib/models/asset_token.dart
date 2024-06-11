@@ -211,6 +211,11 @@ mixin TokenAssetList {
         symbol: 'QNT',
         icon: 'assets/images/token_icons/QNT.svg',
       ),
+      TokenAsset(
+        id: 20396,
+        symbol: 'KAS',
+        icon: 'assets/images/token_icons/KAS.png',
+      ),
     ];
   }
 }
